@@ -1,5 +1,4 @@
-/* Header */
-.header {
-  border-bottom: 1px solid rgb(28, 28, 28);
-  background-color: rgba(var(--background-rgb), 0.8);
+.navbar {
+  padding: .75rem 1rem;
+  background-color: rgb(15, 15, 15);
 }

@@ -1,7 +1,7 @@
 
 export default function Home() {
   return (
-    <main>
+    <>
       <h1>test</h1>
       <h1>test</h1>
       <h1>test</h1>
@@ -116,6 +116,6 @@ export default function Home() {
       <h1>test</h1>
       <h1>test</h1>
       <h1>test</h1>
-    </main>
+    </>
   )
 }

@@ -1,0 +1,5 @@
+/* Header */
+.header {
+  border-bottom: 1px solid rgb(28, 28, 28);
+  background-color: rgba(var(--background-rgb), 0.8);
+}

@@ -2,7 +2,6 @@
 
 import "./navbar.css";
 import Link from "next/link";
-import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faComments, faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
@@ -14,9 +13,11 @@ export default function Navbar() {
     <>
     <nav className="bg-neutral-900 py-3 px-4 flex justify-between w-full sticky top-0">
       <div className="flex">
-        <svg xmlns="http://www.w3.org/2000/svg" height="22" role="img" viewBox="0 0 74 64">
-          <path d="M37.5896 0.25L74.5396 64.25H0.639648L37.5896 0.25Z" fill="#606060"></path>
-        </svg>
+        <Link href="/">
+          <svg xmlns="http://www.w3.org/2000/svg" height="22" role="img" viewBox="0 0 74 64">
+            <path d="M37.5896 0.25L74.5396 64.25H0.639648L37.5896 0.25Z" fill="#606060"></path>
+          </svg>
+        </Link>
 
         {/* Not logged in */}
         <Link href="/auth/login" className="ms-5 text-neutral-500 hover:text-white">

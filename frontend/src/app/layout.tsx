@@ -1,7 +1,7 @@
 import "@fortawesome/fontawesome-svg-core/styles.css"; 
 import "./globals.css"
 import { Metadata } from "next"
-import Navbar from "./components/navbar";
+import Navbar from "./components/Navbar";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;

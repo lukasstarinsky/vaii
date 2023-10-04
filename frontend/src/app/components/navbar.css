@@ -1,4 +1,8 @@
-.navbar {
-  padding: .75rem 1rem;
-  background-color: rgb(15, 15, 15);
+.navbar-avatar {
+  width: 24px;
+  height: 24px;
+}
+
+.navbar-avatar img {
+  border-radius: .35rem;
 }

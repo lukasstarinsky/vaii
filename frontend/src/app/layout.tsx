@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex flex-col">
         <Navbar />
 
-        <main className="container self-center flex justify-center mt-28">
+        <main className="container self-center flex justify-center">
           {children}
         </main>
       </body>

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Register() {
   return (
-    <div className="w-6/12 rounded p-10 section-border">
+    <div className="w-6/12 rounded p-10 section-border mt-28">
       <TextInput id="username" label="Username" type="text" placeholder="Your username..." />
       <TextInput id="email" label="E-Mail" type="text" placeholder="Your e-mail..." className="mt-5" />
       <TextInput id="password" label="Password" type="password" placeholder="Your password..." className="mt-5" />

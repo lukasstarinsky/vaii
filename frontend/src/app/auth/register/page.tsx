@@ -1,14 +1,30 @@
-import TextInput from "@/components/TextInput";
+import Input from "@/components/Input";
 import Link from "next/link";
 
 export default function Register() {
   return (
-    <div className="w-6/12 rounded p-10 section-border mt-28">
-      <TextInput id="username" label="Username" type="text" placeholder="Your username..." />
-      <TextInput id="email" label="E-Mail" type="text" placeholder="Your e-mail..." className="mt-5" />
-      <TextInput id="password" label="Password" type="password" placeholder="Your password..." className="mt-5" />
-      <TextInput id="password-repeat" label="Repeat Password" type="password" placeholder="Repeat your password..." className="mt-5" />
-      <input type="submit" className="mt-7 p-2 rounded hover:bg-neutral-900 hover:text-white outline outline-1 outline-neutral-900 w-full" value="Register" />
+    <div className="w-6/12 rounded section-border mt-28">
+      <div>
+        <label htmlFor="username" className="block mb-2 text-sm font-medium">Username</label>
+        <Input id="username" type="text" placeholder="Your username..." />
+      </div>
+
+      <div className="mt-4">
+        <label htmlFor="email" className="block mb-2 text-sm font-medium">E-Mail</label>
+        <Input id="email" type="text" placeholder="Your e-mail..." />
+      </div>
+
+      <div className="mt-4">
+        <label htmlFor="password" className="block mb-2 text-sm font-medium">Password</label>
+        <Input id="password" type="password" placeholder="Your password..." />
+      </div>
+
+      <div className="mt-4">
+        <label htmlFor="password-repeat" className="block mb-2 text-sm font-medium">Repeat Password</label>
+        <Input id="password-repeat" type="password" placeholder="Repeat your password..." />
+      </div>
+
+      <Input type="submit" value="Create an account" className="mt-7 hover:bg-neutral-900 hover:text-white" />
       <h2 className="mt-4">Already have an account? Go to <Link href="/auth/login" className="underline">Login</Link>.</h2>
     </div>
   );

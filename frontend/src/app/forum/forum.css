@@ -1,0 +1,10 @@
+.forum-background {
+  background-image: url("/forum-background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 80px;
+}
+
+.forum-shoutbox-content {
+  height: 15rem;
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import "./navbar.css";
+import "./Navbar.css";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faComments, faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
@@ -56,5 +56,5 @@ export default function Navbar() {
       </ul>
     </div>
     </>
-  )
+  );
 }

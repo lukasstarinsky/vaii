@@ -1,14 +1,14 @@
 import "@fortawesome/fontawesome-svg-core/styles.css"; 
 import "./globals.css"
 import { Metadata } from "next"
-import Navbar from "./components/Navbar";
+import Navbar from "@/components/Navbar";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
   title: "Home",
-}
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,5 +21,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
       </body>
     </html>
-  )
+  );
 }

@@ -1,4 +1,5 @@
 import Input from "@/components/Input";
+import Link from "next/link";
 import Section from "@/components/Section";
 import "./forum.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,14 +38,55 @@ export default function Forum() {
         </div>
       </Section>
 
-      <Section header="General" className="mt-10" contentClassName="p-3">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, molestiae assumenda quibusdam modi sed labore, delectus quisquam iusto voluptatum dolor ea amet tempora natus omnis ratione voluptatem eos reiciendis quae.
-      </Section>
-      <Section header="General" className="mt-10" contentClassName="p-3">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, molestiae assumenda quibusdam modi sed labore, delectus quisquam iusto voluptatum dolor ea amet tempora natus omnis ratione voluptatem eos reiciendis quae.
-      </Section>
-      <Section header="General" className="mt-10" contentClassName="p-3">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, molestiae assumenda quibusdam modi sed labore, delectus quisquam iusto voluptatum dolor ea amet tempora natus omnis ratione voluptatem eos reiciendis quae.
+      <Section header="General" className="my-10" contentClassName="p-3">
+        <Link href="#" className="hover:bg-gray-200 border-l-4 border-l-fuchsia-500 border-b px-3 py-6 grid grid-cols-4">
+          <div className="flex flex-col col-span-2">
+            <span className="font-bold">News</span>
+            <span className="text-gray-500">Articles about new updates on web.</span>
+          </div>
+          <div className="flex flex-col text-center">
+            <span className="font-bold">300</span>
+            <span className="text-gray-500">Threads</span>
+          </div>
+          <div className="flex flex-col self-center">
+            <span className="font-bold text-xs">How to int in lol [MEGATHREAD]</span>
+            <span>
+              <span className="text-gray-500 text-sm">5 April 2023 • Miat</span>
+            </span>
+          </div>
+        </Link>
+        <Link href="#" className="hover:bg-gray-200 border-l-4 border-l-red-500 border-b px-3 py-6 grid grid-cols-4">
+          <div className="flex flex-col col-span-2">
+            <span className="font-bold">General</span>
+            <span className="text-gray-500">General discussion about any topic.</span>
+          </div>
+          <div className="flex flex-col text-center">
+            <span className="font-bold">300</span>
+            <span className="text-gray-500">Threads</span>
+          </div>
+          <div className="flex flex-col self-center">
+            <span className="font-bold text-xs">How to int in lol [MEGATHREAD]</span>
+            <span>
+              <span className="text-gray-500 text-sm">5 April 2023 • Miat</span>
+            </span>
+          </div>
+        </Link>
+        <Link href="#" className="hover:bg-gray-200 border-l-4 border-l-emerald-500 px-3 py-6 grid grid-cols-4">
+          <div className="flex flex-col col-span-2">
+            <span className="font-bold">Media</span>
+            <span className="text-gray-500">Share images and videos on various topics.</span>
+          </div>
+          <div className="flex flex-col text-center">
+            <span className="font-bold">300</span>
+            <span className="text-gray-500">Threads</span>
+          </div>
+          <div className="flex flex-col self-center">
+            <span className="font-bold text-xs">How to int in lol [MEGATHREAD]</span>
+            <span>
+              <span className="text-gray-500 text-sm">5 April 2023 • Miat</span>
+            </span>
+          </div>
+        </Link>
       </Section>
     </div>
   );

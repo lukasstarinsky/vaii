@@ -15,7 +15,7 @@ export default function Login() {
       </div>
 
       <Input type="submit" value="Login" className="mt-7 hover:bg-neutral-900 hover:text-white" />
-      <h2 className="mt-4">Don't have an account? Go to <Link href="/auth/register" className="underline">Register</Link>.</h2>
+      <h2 className="mt-4">Don't have an account? <Link href="/auth/register" className="underline">Sign up</Link>.</h2>
     </div>
   );
 }

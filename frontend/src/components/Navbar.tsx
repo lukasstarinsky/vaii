@@ -20,11 +20,11 @@ export default function Navbar() {
         {/* Not logged in */}
         <Link href="/auth/login" className="ms-5 text-neutral-500 hover:text-white">
           <FontAwesomeIcon icon={faSignInAlt} className="me-1" />
-          Login
+          Sign in
         </Link>
         <Link href="/auth/register" className="ms-5 text-neutral-500 hover:text-white">
           <FontAwesomeIcon icon={faUserPlus} className="me-1" />
-          Register
+          Sign up
         </Link>
 
         {/* Logged in */}

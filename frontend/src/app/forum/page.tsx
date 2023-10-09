@@ -1,5 +1,7 @@
 import Input from "@/components/Input";
 import "./forum.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 export default function Forum() {
   return (
@@ -20,7 +22,10 @@ export default function Forum() {
           <p><span className="text-emerald-500">LSk: </span>ja nesuhlasim</p>
         </div>
         <div className="flex border-t">
-          <Input type="submit" value="Send" className="bg-gray-900 text-white rounded-none w-28" />
+          <button className="bg-gray-900 text-white px-4 flex items-center">
+            <FontAwesomeIcon icon={faPaperPlane} />
+            <span className="hidden lg:inline-block ms-2">Send</span>
+          </button>
           <Input type="text" className="border-none" placeholder="Type something to communicate with other users..." />
         </div>
       </div>

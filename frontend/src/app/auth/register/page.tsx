@@ -25,7 +25,7 @@ export default function Register() {
       </div>
 
       <Input type="submit" value="Create an account" className="mt-7 hover:bg-neutral-900 hover:text-white" />
-      <h2 className="mt-4">Already have an account? Go to <Link href="/auth/login" className="underline">Login</Link>.</h2>
+      <h2 className="mt-4">Have an account? <Link href="/auth/login" className="underline">Sign in</Link>.</h2>
     </div>
   );
 }

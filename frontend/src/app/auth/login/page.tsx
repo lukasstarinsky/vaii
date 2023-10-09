@@ -1,9 +1,10 @@
 import Input from "@/components/Input";
+import Section from "@/components/Section";
 import Link from "next/link";
 
 export default function Login() {
   return (
-    <div className="w-6/12 rounded section-border mt-28">
+    <Section className="p-10 mt-28 w-6/12" shadow={true}>
       <div>
         <label htmlFor="username" className="block mb-2 text-sm font-medium">Username</label>
         <Input id="username" type="text" placeholder="Your username..." />
@@ -16,6 +17,6 @@ export default function Login() {
 
       <Input type="submit" value="Login" className="mt-7 hover:bg-neutral-900 hover:text-white" />
       <h2 className="mt-4">Don't have an account? <Link href="/auth/register" className="underline">Sign up</Link>.</h2>
-    </div>
+    </Section>
   );
 }

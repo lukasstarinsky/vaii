@@ -5,7 +5,8 @@
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
-  --section-border: #495057;
+  --section-border: #d1d3d7;
+  --section-color: #FBFBFD;
 }
 
 * {
@@ -26,17 +27,4 @@ body {
 
 input[type="submit"] {
   cursor: pointer;
-}
-
-.section-border {
-  -webkit-box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.75);
-  box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.75);
-  padding: 2.5rem;
-  border: 1px solid var(--section-border);
-}
-
-.section {
-  padding: 2.5rem;
-  border: 1px solid var(--section-border);
 }

@@ -1,10 +1,10 @@
-import express, { Request, Response } from "express";
+import express from "express";
 
 const app = express();
 
-app.get("/hello", (req: Request, res: Response) => {
-    res.send("Hello, World");
-});
+import * as Routes from "./routes";
+app.use("/auth", Routes.Auth);
+//app.use("/forum", Routes.Forum);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {

@@ -27,11 +27,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const app = (0, express_1.default)();
-const Routes = __importStar(require("./routes"));
-app.use("/auth", Routes.Auth);
-//app.use("/forum", Routes.Forum);
-const port = process.env.PORT || 8080;
-app.listen(port, () => {
-    console.log(`Server running at port ${port}`);
-});
+const Auth = __importStar(require("../controllers/auth"));
+const router = express_1.default.Router();
+router.post("/login", Auth.Login);
+router.post("/register", Auth.Register);
+exports.default = router;

@@ -1,13 +1,13 @@
 import Input from "@/components/Input";
-import Link from "next/link";
 import Section from "@/components/Section";
+import ForumCategory from "@/components/forum/ForumCategory";
 import "./forum.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 export default function Forum() {
   return (
-    <div className="w-9/12 mt-12">
+    <div className="w-full px-2 sm:px-0 sm:w-9/12 mt-12">
       <div className="forum-background" />
       <div className="flex flex-col">
         <span className="text-4xl text-center mt-2">Forum</span>
@@ -15,7 +15,7 @@ export default function Forum() {
       </div>
 
       <Section header="Shoutbox" className="mt-12">
-        <div className="forum-shoutbox-content p-3">
+        <div className="forum-shoutbox-content p-3 text-sm">
           <p>
             <span className="text-emerald-500">peto123451: </span>su zli<span className="ms-1 text-xs italic text-gray-300">• 5 seconds ago</span>
           </p>
@@ -39,54 +39,14 @@ export default function Forum() {
       </Section>
 
       <Section header="General" className="my-10" contentClassName="p-3">
-        <Link href="#" className="hover:bg-gray-200 border-l-4 border-l-fuchsia-500 border-b px-3 py-6 grid grid-cols-4">
-          <div className="flex flex-col col-span-2">
-            <span className="font-bold">News</span>
-            <span className="text-gray-500">Articles about new updates on web.</span>
-          </div>
-          <div className="flex flex-col text-center">
-            <span className="font-bold">300</span>
-            <span className="text-gray-500">Threads</span>
-          </div>
-          <div className="flex flex-col self-center">
-            <span className="font-bold text-xs">How to int in lol [MEGATHREAD]</span>
-            <span>
-              <span className="text-gray-500 text-sm">5 April 2023 • Miat</span>
-            </span>
-          </div>
-        </Link>
-        <Link href="#" className="hover:bg-gray-200 border-l-4 border-l-red-500 border-b px-3 py-6 grid grid-cols-4">
-          <div className="flex flex-col col-span-2">
-            <span className="font-bold">General</span>
-            <span className="text-gray-500">General discussion about any topic.</span>
-          </div>
-          <div className="flex flex-col text-center">
-            <span className="font-bold">300</span>
-            <span className="text-gray-500">Threads</span>
-          </div>
-          <div className="flex flex-col self-center">
-            <span className="font-bold text-xs">How to int in lol [MEGATHREAD]</span>
-            <span>
-              <span className="text-gray-500 text-sm">5 April 2023 • Miat</span>
-            </span>
-          </div>
-        </Link>
-        <Link href="#" className="hover:bg-gray-200 border-l-4 border-l-emerald-500 px-3 py-6 grid grid-cols-4">
-          <div className="flex flex-col col-span-2">
-            <span className="font-bold">Media</span>
-            <span className="text-gray-500">Share images and videos on various topics.</span>
-          </div>
-          <div className="flex flex-col text-center">
-            <span className="font-bold">300</span>
-            <span className="text-gray-500">Threads</span>
-          </div>
-          <div className="flex flex-col self-center">
-            <span className="font-bold text-xs">How to int in lol [MEGATHREAD]</span>
-            <span>
-              <span className="text-gray-500 text-sm">5 April 2023 • Miat</span>
-            </span>
-          </div>
-        </Link>
+        <ForumCategory color="fuchsia-500" title="News" description="Articles about new updates on web." />
+        <ForumCategory color="red-500" title="General" description="General discussion about any topic." />
+        <ForumCategory color="emerald-500" title="Media" description="Share images and videos on various topics." />
+      </Section>
+      <Section header="General" className="my-10" contentClassName="p-3">
+        <ForumCategory color="fuchsia-500" title="News" description="Articles about new updates on web." />
+        <ForumCategory color="red-500" title="General" description="General discussion about any topic." />
+        <ForumCategory color="emerald-500" title="Media" description="Share images and videos on various topics." />
       </Section>
     </div>
   );

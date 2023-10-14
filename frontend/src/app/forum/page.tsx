@@ -39,14 +39,14 @@ export default function Forum() {
       </Section>
 
       <Section header="General" className="my-10" contentClassName="p-3">
-        <ForumCategory color="fuchsia-500" title="News" description="Articles about new updates on web." />
-        <ForumCategory color="red-500" title="General" description="General discussion about any topic." />
-        <ForumCategory color="emerald-500" title="Media" description="Share images and videos on various topics." />
+        <ForumCategory style="border-l-fuchsia-500" title="News" description="Articles about new updates on web." />
+        <ForumCategory style="border-l-red-500" title="General" description="General discussion about any topic." />
+        <ForumCategory style="border-l-emerald-500" title="Media" description="Share images and videos on various topics." />
       </Section>
       <Section header="General" className="my-10" contentClassName="p-3">
-        <ForumCategory color="fuchsia-500" title="News" description="Articles about new updates on web." />
-        <ForumCategory color="red-500" title="General" description="General discussion about any topic." />
-        <ForumCategory color="emerald-500" title="Media" description="Share images and videos on various topics." />
+        <ForumCategory style="border-l-fuchsia-500" title="News" description="Articles about new updates on web." />
+        <ForumCategory style="border-l-red-500" title="General" description="General discussion about any topic." />
+        <ForumCategory style="border-l-emerald-500" title="Media" description="Share images and videos on various topics." />
       </Section>
     </div>
   );

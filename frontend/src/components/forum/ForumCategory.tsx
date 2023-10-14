@@ -3,12 +3,12 @@ import Link from "next/link";
 interface CategoryProps {
   title: string,
   description?: string,
-  color: string
+  style?: string
 }
 
 export default function ForumCategory(props: CategoryProps) {
   return (
-    <Link href="#" className={`border-b border-l-4 border-l-${props.color} hover:bg-gray-200 px-3 py-6 grid grid-cols-4`}>
+    <Link href="#" className={`border-b border-l-4 ${props.style} hover:bg-gray-200 px-3 py-6 grid grid-cols-4`}>
       <div className="flex flex-col col-span-2 self-center">
         <span className="font-bold text-md">{props.title}</span>
         <span className="text-gray-500 text-sm">{props.description}</span>

@@ -25,7 +25,7 @@ export default function Register() {
         <Input id="password-repeat" type="password" placeholder="Repeat your password..." />
       </div>
 
-      <Input type="submit" value="Create an account" className="mt-7 hover:bg-neutral-900 hover:text-white" />
+      <Input type="submit" value="Create an account" className="mt-7 bg-gray-900 text-white" />
       <h2 className="mt-4">Have an account? <Link href="/auth/login" className="underline">Sign in</Link>.</h2>
     </Section>
   );

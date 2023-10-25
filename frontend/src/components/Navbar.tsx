@@ -28,7 +28,7 @@ export default function Navbar() {
         </Link>
 
         {/* Logged in */}
-        <Link href="/forum" className="ms-5 text-neutral-500 hover:text-white">
+        <Link href="/" className="ms-5 text-neutral-500 hover:text-white">
           <FontAwesomeIcon icon={faComments} className="me-1" />
           Forum
         </Link>

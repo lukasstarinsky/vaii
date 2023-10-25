@@ -10,9 +10,9 @@ interface SectionProps {
 
 export default function Section(props: SectionProps) {
   return (
-    <div className={`rounded border border-1 border-gray-900 ${props.className} ${props.shadow ? "section-shadow": ""}`}>
+    <div className={`rounded border border-1 section border-gray-900 ${props.className} ${props.shadow ? "section-shadow": ""}`}>
       { props.header && 
-        <div className="px-3 py-1 bg-gray-900 text-white font-semibold">
+        <div className="px-3 py-1 section-header text-white font-semibold">
           <span className="section-header-text">{props.header}</span>
         </div>
       }

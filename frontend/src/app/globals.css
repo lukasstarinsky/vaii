@@ -5,8 +5,8 @@
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
-  --section-border: #d1d3d7;
-  --section-color: #FBFBFD;
+  --section-accent: 17, 24, 39;
+  --section-background: #FBFBFD;
 }
 
 * {
@@ -18,6 +18,10 @@
 
 html, body {
   max-width: 100vw;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
 }
 
 body {

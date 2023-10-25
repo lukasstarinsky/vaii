@@ -1,5 +1,8 @@
+.section {
+  background-color: var(--section-background);
+}
+
 .section-shadow {
-  background-color: var(--section-color);
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
@@ -10,4 +13,8 @@
   font-weight: 700;
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.section-header {
+  background-color: rgb(var(--section-accent));
 }

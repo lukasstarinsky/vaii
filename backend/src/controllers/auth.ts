@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { UserDocument } from "../models/User";
+import bcrypt from "bcrypt";
+import { User, UserDocument } from "../models/User";
 import { IVerifyOptions } from "passport-local";
 import { body, validationResult } from "express-validator";
 
@@ -39,12 +40,25 @@ export async function Register(req: Request, res: Response, next: NextFunction) 
             .isLength({ min: 6 }).withMessage("Password must be atleast 6 characters long.").run(req);
         await body("passwordRepeat", "Passwords do not match.").equals(req.body.password).run(req);
 
-        const validation = validationResult(req);
+        const { username, email, password } = req.body;
+        const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+        let errors: string[] = validationResult(req).array().map(x => x.msg);
 
-        if (!validation.isEmpty())
-            return res.status(400).send({ errors: validationResult(req).array().map(x => x.msg) });
+        if (existingUser)
+            errors.push("User with this username/email already exists.");
 
-        // Todo register x)
+        if (errors.length > 0)
+            return res.status(400).send({ errors });
+
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+        const newUser = new User({
+            username,
+            password: hash,
+            email
+        });
+        await newUser.save();
+        res.status(201).send("Account created.");
     } catch (err: any) {
         next(err);
     }

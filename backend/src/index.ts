@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 // Errors
 app.use((err: NativeError, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
-    return res.status(500).send("Something went wrong on the server side.");
+    return res.status(500).send("Something went wrong.");
 })
 
 app.listen(port, () => console.log(`Server running at port ${port}`));

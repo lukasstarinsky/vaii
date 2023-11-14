@@ -1,16 +1,23 @@
 import { NextFunction, Request, Response } from "express";
-import passport from "passport";
-import bcrypt from "bcrypt";
+import { body, validationResult } from "express-validator";
 import { User, UserDocument } from "../models/User";
 import { IVerifyOptions } from "passport-local";
-import { body, validationResult } from "express-validator";
+import passport from "passport";
+import bcrypt from "bcrypt";
 
 export async function Login(req: Request, res: Response, next: NextFunction) {
+    await body("username").notEmpty().withMessage("Username is required.").run(req);
+    await body("password").notEmpty().withMessage("Password is required.").run(req);
+
+    const validation = validationResult(req);
+    if (!validation.isEmpty())
+        return res.status(400).send({ errors: validation.array().map(x => x.msg) });
+
     passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
         if (err)
             return next(err);
         else if (!user)
-            return res.status(404).send(info.message);
+            return res.status(404).send({ errors: [ info.message ]});
 
         req.logIn(user, (err) => {
             if (err)

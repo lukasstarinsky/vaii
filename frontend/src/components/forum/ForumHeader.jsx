@@ -1,11 +1,6 @@
 import "./ForumHeader.css";
 
-interface HeaderProps {
-  header: string,
-  description: string
-}
-
-export default function ForumHeader(props: HeaderProps) {
+export default function ForumHeader(props) {
   return (
     <>
       <div className="forum-header-background" />

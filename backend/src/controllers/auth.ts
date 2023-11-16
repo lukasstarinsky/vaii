@@ -17,7 +17,7 @@ export async function Login(req: Request, res: Response, next: NextFunction) {
         if (err)
             return next(err);
         else if (!user)
-            return res.status(404).send({ errors: [ info.message ]});
+            return res.status(400).send({ errors: [ info.message ]});
 
         req.logIn(user, (err) => {
             if (err)

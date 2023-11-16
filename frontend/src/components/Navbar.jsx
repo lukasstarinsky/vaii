@@ -9,7 +9,7 @@ export default function Navbar() {
   const [dropdown, setDropdown] = useState(false);
 
   return (
-    <nav className="bg-neutral-900 py-3 px-4 flex justify-between w-full sticky top-0">
+    <nav className="bg-neutral-900 py-3 px-4 flex justify-between z-40 w-full sticky top-0">
       <div className="flex">
         <Link href="/">
           <svg xmlns="http://www.w3.org/2000/svg" height="22" role="img" viewBox="0 0 74 64">

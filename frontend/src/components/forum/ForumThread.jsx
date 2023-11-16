@@ -1,11 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface ThreadProps {
-  
-}
-
-export default function ForumThread(props: ThreadProps) {
+export default function ForumThread(props) {
   return (
     <Link href="" className={`hover:bg-gray-200 border-b px-3 py-6 grid grid-cols-4`}>
       <div className="flex flex-row col-span-2 items-center">

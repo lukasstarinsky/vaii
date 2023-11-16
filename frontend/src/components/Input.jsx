@@ -1,6 +1,4 @@
-import { ComponentPropsWithoutRef } from "react";
-
-export default function Input(props: ComponentPropsWithoutRef<"input">) {
+export default function Input(props) {
   return (
     <input 
       {...props}

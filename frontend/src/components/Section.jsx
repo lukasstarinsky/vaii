@@ -1,14 +1,6 @@
 import "./Section.css";
 
-interface SectionProps {
-  className?: string
-  children: string | JSX.Element | JSX.Element[],
-  header?: string,
-  shadow?: boolean,
-  contentClassName?: string
-}
-
-export default function Section(props: SectionProps) {
+export default function Section(props) {
   return (
     <div className={`rounded border border-1 section border-gray-900 ${props.className} ${props.shadow ? "section-shadow": ""}`}>
       { props.header && 

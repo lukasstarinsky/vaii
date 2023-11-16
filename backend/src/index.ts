@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
+import cors from "cors";
 import "./config/passport";
 
 // Config
@@ -19,6 +20,10 @@ mongoose.connect(`${process.env.MONGO_DB_URL}`)
         process.exit(1);
     });
 
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.json({ limit: "50mb" }));
 app.use(session({
@@ -28,13 +33,17 @@ app.use(session({
     store: new MongoStore({
         client: mongoose.connection.getClient(),
         collectionName: "sessions"
-    })
+    }),
+    cookie: {
+        sameSite: "none",
+        secure: true
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 import * as Routes from "./routes";
-app.use("/auth", Routes.Auth);
+app.use("/api/auth", Routes.Auth);
 
 // 404
 app.use((req, res, next) => {

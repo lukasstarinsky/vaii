@@ -1,12 +1,22 @@
+'use client';
+
 import Input from "@/components/Input";
 import Section from "@/components/Section";
 import ForumCategory from "@/components/forum/ForumCategory";
 import ForumHeader from "@/components/forum/ForumHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useUserStore } from "@/store/user";
+import { redirect } from "next/navigation";
 import "./forum.css";
 
 export default function Forum() {
+  const userStore = useUserStore();
+
+  if (!userStore.user) {
+    redirect("/auth/login");
+  }
+
   return (
     <div className="w-full px-2 md:w-9/12 md:px-0 mt-12">
       <ForumHeader header="Forum" description="Discuss different topics, chat with others, share ideas and help others." />

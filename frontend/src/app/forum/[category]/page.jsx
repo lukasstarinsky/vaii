@@ -4,8 +4,8 @@ import Section from "@/components/Section";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-export default function Forum({ params } : { params: { category: string }}) {
-  const description: {[index: string]: string} = {
+export default function Forum({ params }) {
+  const description = {
     news: "Articles about new updates on web.",
     general: "General discussion about any topic.",
     media: "Share images and videos on various topics."

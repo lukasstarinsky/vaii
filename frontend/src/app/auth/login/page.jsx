@@ -14,15 +14,21 @@ export default function Login() {
 
   const Login = () => {
     AuthService.LoginUser(formData)
-      .then((response) => userStore.setUser(response.id, response.username))
-      .catch((response) => setErrors(response.errors));
+      .then((response) => { 
+        userStore.setUser(response.id, response.username);
+        redirect("/");
+      })
+      .catch((response) => {
+        setFormData({ ...formData, password: "" });
+        setErrors(response.errors);
+      });
   };
 
   useEffect(() => {
     if (userStore.user.id) {
       redirect("/") 
     }
-  }, []);
+  }, [userStore.user]);
 
   return (
     <div className="w-full px-4 md:w-9/12 md:px-0 xl:w-6/12">
@@ -41,7 +47,7 @@ export default function Login() {
                  onChange={(e) => setFormData(formData => ({...formData, password: e.target.value}))} />
         </div>
 
-        { errors.length > 0 ?
+        { errors && errors.length > 0 ?
           <div className="bg-red-100 border border-red-400 text-red-700 mt-3 px-4 py-3 rounded relative" role="alert">
             {errors.map((error, i) => (
               <span className="block sm:inline">{error}<br /></span>

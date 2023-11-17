@@ -5,6 +5,16 @@ import { IVerifyOptions } from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
 
+export async function Check(req: Request, res: Response, next: NextFunction) {
+    if (!req.user)
+        return res.status(401).end();
+    
+    res.status(200).send({
+        id: (req.user as UserDocument).id,
+        username: (req.user as UserDocument).username
+    });
+}
+
 export async function Login(req: Request, res: Response, next: NextFunction) {
     await body("username").notEmpty().withMessage("Username is required.").run(req);
     await body("password").notEmpty().withMessage("Password is required.").run(req);

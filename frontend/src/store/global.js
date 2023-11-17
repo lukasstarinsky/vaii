@@ -8,5 +8,8 @@ export const useGlobalStore = create((set) => ({
         set({ isLoading: true });
         setTimeout(() => set( { isLoading: false }), delay);
     },
-    stopLoading: () => { set({ isLoading: false })}
+    stopLoading: () => { set({ isLoading: false })},
+    stopLoadingDelay: (delay) => {
+        setTimeout(() => set( { isLoading: false}), delay);
+    }
 }));

@@ -5,11 +5,13 @@ import "./globals.css"
 import "@/services/HttpService";
 import { Open_Sans } from "next/font/google";
 import { useGlobalStore } from "@/store/global";
+import { useUserStore } from "@/store/user";
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from 'next/navigation'
 import { config } from "@fortawesome/fontawesome-svg-core";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
+import * as AuthService from "@/services/AuthService";
 
 config.autoAddCss = false;
 
@@ -19,13 +21,21 @@ const openSans = Open_Sans({
 });
 
 export default function RootLayout({ children }) {
-  const { isLoading, startLoadingDelay } = useGlobalStore();
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const { isLoading, startLoading, stopLoading } = useGlobalStore();
+  const { setUser } = useUserStore();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
  
   useEffect(() => {
-    startLoadingDelay(300);
+    startLoading();
   }, [pathname, searchParams])
+
+  useEffect(() => {
+    AuthService.CheckUser() 
+      .then((response) => setUser(response.id, response.username))
+      .catch(() => {})
+      .finally(() => stopLoading());
+  }, []);
 
   return (
     <html lang="en" className={openSans.className}>

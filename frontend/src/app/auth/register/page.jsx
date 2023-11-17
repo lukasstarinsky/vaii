@@ -1,8 +1,21 @@
+'use client';
+
 import Input from "@/components/Input";
 import Section from "@/components/Section";
 import Link from "next/link";
+import { useUserStore } from "@/store/user";
+import { useEffect } from "react";
+import { redirect } from "next/navigation";
 
 export default function Register() {
+  const userStore = useUserStore();
+
+  useEffect(() => {
+    if (userStore.user.id) {
+      redirect("/") 
+    }
+  }, [userStore.user]);
+
   return (
     <div className="w-full px-4 md:w-9/12 md:px-0 xl:w-6/12">
       <Section className="p-10 mt-28" shadow={true}>

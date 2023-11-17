@@ -39,14 +39,14 @@ export default function Login() {
         <form onSubmit={Login}>
           <div>
             <label htmlFor="username" className="block mb-2 text-sm font-medium">Username</label>
-            <Input id="username" type="text" placeholder="Your username..." required autocomplete="off"
+            <Input id="username" type="text" placeholder="Your username..." required autoComplete="off"
                   value={formData.username}
                   onChange={(e) => setFormData(formData => ({...formData, username: e.target.value}))} />
           </div>
 
           <div className="mt-4">
             <label htmlFor="password" className="block mb-2 text-sm font-medium">Password</label>
-            <Input id="password" type="password" placeholder="Your password..." required autocomplete="off"
+            <Input id="password" type="password" placeholder="Your password..." required autoComplete="off"
                   value={formData.password}
                   onChange={(e) => setFormData(formData => ({...formData, password: e.target.value}))} />
           </div>

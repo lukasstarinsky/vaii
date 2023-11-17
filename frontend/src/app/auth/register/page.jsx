@@ -36,28 +36,28 @@ export default function Register() {
         <form onSubmit={Register}>
           <div>
             <label htmlFor="username" className="block mb-2 text-sm font-medium">Username</label>
-            <Input id="username" type="text" placeholder="Your username..." required minlength={4} autocomplete="off"
+            <Input id="username" type="text" placeholder="Your username..." required minLength={4} autoComplete="off"
                     value={formData.username} 
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })} />
           </div>
 
           <div className="mt-4">
             <label htmlFor="email" className="block mb-2 text-sm font-medium">E-Mail</label>
-            <Input id="email" type="email" placeholder="Your e-mail..." required autocomplete="off"
+            <Input id="email" type="email" placeholder="Your e-mail..." required autoComplete="off"
                     value={formData.email} 
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
           </div>
 
           <div className="mt-4">
             <label htmlFor="password" className="block mb-2 text-sm font-medium">Password</label>
-            <Input id="password" type="password" placeholder="Your password..." required minlength={6} autocomplete="off"
+            <Input id="password" type="password" placeholder="Your password..." required minLength={6} autoComplete="off"
                     value={formData.password} 
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
           </div>
 
           <div className="mt-4">
             <label htmlFor="password-repeat" className="block mb-2 text-sm font-medium">Repeat Password</label>
-            <Input id="password-repeat" type="password" placeholder="Repeat your password..." required minlength={6} autocomplete="off"
+            <Input id="password-repeat" type="password" placeholder="Repeat your password..." required minLength={6} autoComplete="off"
                     value={formData.passwordRepeat} 
                     onChange={(e) => setFormData({ ...formData, passwordRepeat: e.target.value })} />
           </div>

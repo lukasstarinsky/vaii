@@ -25,10 +25,9 @@ export default function RootLayout({ children }) {
   const { setUser } = useUserStore();
 
   useEffect(() => {
-    AuthService.CheckUser() 
-      .then((response) => setUser(response.id, response.username))
-      .catch(() => {})
-      // .finally(() => stopLoading());
+    AuthService.CheckUser((user) => {
+      setUser(user.id, user.username);
+    });
   }, []);
 
   return (

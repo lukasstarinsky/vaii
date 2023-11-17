@@ -1,14 +1,26 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faComments, faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faAddressCard, faComments, faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useUserStore } from "@/store/user";
+import * as AuthService from "@/services/AuthService";
 
 export default function Navbar() {
   const [dropdown, setDropdown] = useState(false);
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
+  const router = useRouter();
+
+  const Logout = (event) => {
+    event.preventDefault();
+
+    AuthService.LogoutUser(() => {
+      setUser("", "");
+      router.push("/auth/login");
+    });
+  }
 
   return (
     <nav className="bg-neutral-900 py-3 px-4 flex justify-between z-40 w-full sticky top-0">
@@ -33,8 +45,8 @@ export default function Navbar() {
         :
           <>
           <Link href="/" className="ms-5 text-neutral-500 hover:text-white">
-            <FontAwesomeIcon icon={faComments} className="me-1" />
-            Forum
+            <FontAwesomeIcon icon={faAddressCard} className="me-1" />
+            Profile
           </Link>
           <Link href="/" className="ms-5 text-neutral-500 hover:text-white">
             <FontAwesomeIcon icon={faComments} className="me-1" />
@@ -53,13 +65,10 @@ export default function Navbar() {
           <div id="dropdown" className={`${dropdown ? "": "hidden"} right-3 absolute top-9 rounded w-44 bg-neutral-700`}>
             <ul className="py-2 text-sm text-gray-200">
               <li>
-                <a href="#" className="block px-4 py-2 hover:bg-neutral-900">Profile</a>
-              </li>
-              <li>
                 <a href="#" className="block px-4 py-2 hover:bg-neutral-900">Settings</a>
               </li>
-              <li>
-                <a href="#" className="block px-4 py-2 hover:bg-neutral-900">Logout</a>
+              <li className="cursor-pointer" onClick={Logout}>
+                <span className="block px-4 py-2 hover:bg-neutral-900">Logout</span>
               </li>
             </ul>
           </div>

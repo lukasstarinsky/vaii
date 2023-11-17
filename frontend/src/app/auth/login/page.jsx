@@ -5,33 +5,30 @@ import Section from "@/components/Section";
 import Link from "next/link";
 import * as AuthService from "@/services/AuthService";
 import { useUserStore } from "@/store/user";
-import { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [formData, setFormData] = useState({username: "", password: ""});
   const [errors, setErrors] = useState([]);
-  const userStore = useUserStore();
+  const { setUser, user } = useUserStore();
+  const router = useRouter();
 
   const Login = (event) => {
     event.preventDefault();
 
-    AuthService.LoginUser(formData)
-      .then((response) => { 
-        userStore.setUser(response.id, response.username);
-        redirect("/");
-      })
-      .catch((response) => {
-        setFormData({ ...formData, password: "" });
-        setErrors(response.errors);
-      });
+    AuthService.LoginUser(formData, (user) => {
+      setUser(user.id, user.username);
+      router.push("/");
+    }, (response) => {
+      setFormData({ ...formData, password: "" });
+      setErrors(response.errors);
+    });
   };
 
-  useEffect(() => {
-    if (userStore.user.id) {
-      redirect("/") 
-    }
-  }, [userStore.user]);
+  if (user.id) {
+    router.push("/");
+  }
 
   return (
     <div className="w-full px-4 md:w-9/12 md:px-0 xl:w-6/12">

@@ -7,14 +7,15 @@ import ForumHeader from "@/components/forum/ForumHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useUserStore } from "@/store/user";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import "./forum.css";
 
 export default function Forum() {
-  const userStore = useUserStore();
+  const router = useRouter();
+  const { user } = useUserStore();
 
-  if (!userStore.user) {
-    redirect("/auth/login");
+  if (!user.id) {
+    router.push("/auth/login");
   }
 
   return (

@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 
 export async function Check(req: Request, res: Response, next: NextFunction) {
     if (!req.user)
-        return res.status(401).end();
+        return res.status(401).json({});
     
     res.status(200).send({
         id: (req.user as UserDocument).id,
@@ -79,4 +79,13 @@ export async function Register(req: Request, res: Response, next: NextFunction) 
     } catch (err: any) {
         next(err);
     }
+}
+
+export function Logout(req: Request, res: Response, next: NextFunction) {
+    req.logout((err) => {
+        if (err)
+            return next(err);
+
+        return res.status(200).json({});
+    });
 }

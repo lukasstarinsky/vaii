@@ -4,14 +4,16 @@ import Input from "@/components/Input";
 import Section from "@/components/Section";
 import Link from "next/link";
 import { useUserStore } from "@/store/user";
-import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import * as AuthService from "@/services/AuthService";
 
 export default function Register() {
   const [formData, setFormData] = useState({username: "", email: "", password: "", passwordRepeat: ""});
   const [errors, setErrors] = useState([]);
-
-  const userStore = useUserStore();
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { user } = useUserStore();
+  const router = useRouter();
 
   const Register = (event) => {
     event.preventDefault();
@@ -22,14 +24,20 @@ export default function Register() {
       return;
     }
 
+    AuthService.RegisterUser(formData, () => {
+      setFormData({ username: "", email: "", password: "", passwordRepeat: "" });
+      setIsSuccess(true);
+      setErrors([]);
+    }, (response) => {
+      setFormData({ ...formData, password: "", passwordRepeat: "" });
+      setErrors(response.errors);
+    });
   }
 
-  useEffect(() => {
-    if (userStore.user.id) {
-      redirect("/") 
-    }
-  }, [userStore.user]);
-
+  if (user.id) {
+    router.push("/");
+  }
+  
   return (
     <div className="w-full px-4 md:w-9/12 md:px-0 xl:w-6/12">
       <Section className="p-10 mt-28" shadow={true}>
@@ -69,6 +77,12 @@ export default function Register() {
               ))}
             </div>
           : <></>}
+
+          { isSuccess && 
+            <div className="bg-green-100 border border-green-400 text-green-700 mt-3 px-4 py-3 rounded relative" role="alert">
+              <span className="block sm:inline">Account created.</span>
+            </div>
+          }
 
           <Input type="submit" value="Create an account" className="mt-3 bg-gray-900 text-white" />
           <h2 className="mt-4">Have an account? <Link href="/auth/login" className="underline">Sign in</Link>.</h2>

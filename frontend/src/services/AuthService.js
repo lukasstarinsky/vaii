@@ -1,18 +1,39 @@
-import HTTP from "@/services/HttpService";
+import { HTTP, DefaultErrorHandle } from "@/services/HttpService";
 
-export function CheckUser() {
-    return HTTP.get("auth/check")
-        .then((res) => Promise.resolve(res.data));
+export function CheckUser(onSuccess) {
+    HTTP.get("auth/check")
+        .then((res) => onSuccess(res.data))
+        .catch(() => {});
 }
 
-export function LoginUser(formData) {
-    return HTTP.post("auth/login", {...formData})
-        .then((res) => { return Promise.resolve(res.data) })
+export function LoginUser(formData, onSuccess, onError) {
+    HTTP.post("auth/login", {...formData})
+        .then((res) => onSuccess(res.data))
         .catch((err) => {
             if (err.response)
-                return Promise.reject(err.response.data);
+                onError(err.response.data);
             else if (err.request)
-                return Promise.reject({ errors: [err.message] });
-            return Promise.reject({ errors: ["Something went wrong."] });
+                onError({ errors: [err.message] });
+            else
+                onError({ errors: ["Something went wrong."] });
         });
+}
+
+export function RegisterUser(formData, onSuccess, onError) {
+    HTTP.post("auth/register", {...formData})
+        .then((res) => onSuccess(res.data))
+        .catch((err) => {
+            if (err.response)
+                onError(err.response.data);
+            else if (err.request)
+                onError({ errors: [err.message] });
+            else
+                onError({ errors: ["Something went wrong."] })
+        })
+}
+
+export function LogoutUser(onSuccess) {
+    HTTP.post("auth/logout")
+        .then(() => onSuccess())
+        .catch((err) => DefaultErrorHandle(err));
 }

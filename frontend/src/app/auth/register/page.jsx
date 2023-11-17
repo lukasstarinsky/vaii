@@ -3,17 +3,13 @@
 import Input from "@/components/Input";
 import Section from "@/components/Section";
 import Link from "next/link";
-import { useUserStore } from "@/store/user";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import * as AuthService from "@/services/AuthService";
 
 export default function Register() {
   const [formData, setFormData] = useState({username: "", email: "", password: "", passwordRepeat: ""});
   const [errors, setErrors] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
-  const { user } = useUserStore();
-  const router = useRouter();
 
   const Register = (event) => {
     event.preventDefault();
@@ -34,10 +30,6 @@ export default function Register() {
     });
   }
 
-  if (user.id) {
-    router.push("/");
-  }
-  
   return (
     <div className="w-full px-4 md:w-9/12 md:px-0 xl:w-6/12">
       <Section className="p-10 mt-28" shadow={true}>

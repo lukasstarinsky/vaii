@@ -21,12 +21,13 @@ const openSans = Open_Sans({
 });
 
 export default function RootLayout({ children }) {
-  const { isLoading } = useGlobalStore();
+  const { isLoading, isAuthLoading, stopAuthLoading } = useGlobalStore();
   const { setUser } = useUserStore();
 
   useEffect(() => {
     AuthService.CheckUser((user) => {
       setUser(user.id, user.username);
+      stopAuthLoading();
     });
   }, []);
 
@@ -36,11 +37,13 @@ export default function RootLayout({ children }) {
         <Navbar />
         <RouteChangeHandler />
 
-        { isLoading && <Loading /> }
+        { isLoading || isAuthLoading ? <Loading /> : <></> }
 
-        <main className={`${isLoading ? 'hidden': ''} container self-center flex justify-center flex-col items-center`}>
-          {children}
-        </main>
+        { !isAuthLoading && 
+          <main className={`${isLoading ? 'hidden': ''} container self-center flex justify-center flex-col items-center`}>
+            {children}
+          </main>
+        }
       </body>
     </html>
   );

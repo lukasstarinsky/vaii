@@ -4,18 +4,45 @@ import Input from "@/components/Input";
 import Section from "@/components/Section";
 import ForumCategory from "@/components/forum/ForumCategory";
 import ForumHeader from "@/components/forum/ForumHeader";
+import AuthSecure from "@/components/AuthSecure";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { useUserStore } from "@/store/user";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useRef } from "react";
+import { socket } from "@/utilities/socket";
 import "./forum.css";
 
-export default function Forum() {
-  const router = useRouter();
-  const { user } = useUserStore();
+const Forum = () => {
+  const divRef = useRef(null);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
-  if (!user.id) {
-    router.push("/auth/login");
+  useEffect(() => {
+    socket.connect();
+
+    socket.on("new-message", (newMessage) => {
+      newMessage = {
+        ...newMessage,
+        posted: new Date().toLocaleString("sk-SK")
+      };
+      setMessages(curr => [...curr, newMessage]);
+    });
+    
+    return () => {
+      socket.disconnect();
+    }
+  }, []);
+  
+  useEffect(() => {    
+    divRef.current.scrollTo({ top: messages.length * 90, behavior: "smooth" });
+  }, [messages]);
+
+  const SendMessage = (event) => {
+    event.preventDefault();
+
+    if (message.length > 0) {
+      socket.emit("message", message);
+      setMessage("");
+    }
   }
 
   return (
@@ -23,27 +50,31 @@ export default function Forum() {
       <ForumHeader header="Forum" description="Discuss different topics, chat with others, share ideas and help others." />
 
       <Section header="Shoutbox" className="mt-12">
-        <div className="forum-shoutbox-content p-3 text-sm">
-          <p>
-            <span className="text-emerald-500">peto123451: </span>test<span className="ms-1 text-xs italic text-gray-300">• 5 seconds ago</span>
-          </p>
-          <p>
-            <span className="text-emerald-500">lukas: </span>test2<span className="ms-1 text-xs italic text-gray-300">• 5 seconds ago</span>
-          </p>
-          <p>
-            <span className="text-emerald-500">peto123451: </span>test3<span className="ms-1 text-xs italic text-gray-300">• 5 seconds ago</span>
-          </p>
-          <p>
-            <span className="text-emerald-500">lukas: </span>test4<span className="ms-1 text-xs italic text-gray-300">• 5 seconds ago</span>
-          </p>
+        <div className="forum-shoutbox-content p-3 text-sm" ref={divRef}>
+          { messages && messages.length > 0 ? messages.map((inMessage, i) => (
+              inMessage.author == "SYSTEM" ?
+                <p key={i} className="break-words border-b-1">
+                  <span className="text-xs text-gray-500">{inMessage.posted}: </span>
+                  <span className={`${inMessage.color} font-bold`}>{inMessage.message}</span>
+                </p>
+              :
+                <p key={i} className="break-words border-b-1">
+                  <span className="text-xs text-gray-500">{inMessage.posted}: </span>
+                  <span className="text-emerald-500 font-bold">{inMessage.author}: </span>
+                  <span>{inMessage.message}</span>
+                </p>
+            ))
+          : <></>}
         </div>
-        <div className="flex border-t border-gray-900">
-          <button className="bg-gray-900 text-white px-4 flex items-center">
+        <form onSubmit={SendMessage} className="flex border-t border-gray-900">
+          <button className="bg-gray-900 text-white px-4 flex items-center" type="submit">
             <FontAwesomeIcon icon={faPaperPlane} />
             <span className="hidden lg:inline-block ms-2">Send</span>
           </button>
-          <Input type="text" className="border-none" placeholder="Type something to communicate with other users..." />
-        </div>
+          <Input type="text" className="border-none" placeholder="Type something to communicate with other users..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}  />
+        </form>
       </Section>
 
       <Section header="General" className="my-10" contentClassName="p-3">
@@ -59,3 +90,5 @@ export default function Forum() {
     </div>
   );
 }
+
+export default AuthSecure(Forum); 

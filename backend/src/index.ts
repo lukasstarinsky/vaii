@@ -26,7 +26,7 @@ app.use(cors({
 }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.json({ limit: "50mb" }));
-app.use(session({
+const sessionMiddleware = session({
     secret: `${process.env.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: false,
@@ -38,7 +38,8 @@ app.use(session({
         sameSite: "none",
         secure: false
     }
-}));
+});
+app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -56,4 +57,52 @@ app.use((err: NativeError, req: Request, res: Response, next: NextFunction) => {
     return res.status(500).send("Something went wrong.");
 })
 
-app.listen(port, () => console.log(`Server running at port ${port}`));
+// Sockets
+import { createServer } from "http";
+import { Server, Socket } from "socket.io";
+import { User } from "./models/User";
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    cors: {
+        origin: "http://127.0.0.1:3000",
+        methods: ["GET", "POST"],
+        credentials: true
+    }
+});
+
+const wrapper = (middleware: any) => (socket: Socket, next: any) => middleware(socket.request, {}, next);
+io.use(wrapper(sessionMiddleware));
+
+io.on("connection", async (socket) => {
+    const user = await User.findById((socket.request as any).session.passport.user);
+    console.log(`User '${user!.username}' connected.`);
+
+    socket.emit("new-message", {
+        author: "SYSTEM",
+        color: "text-gray-500",
+        message: "Connected to text chat."
+    });
+
+    socket.on("message", (message) => {
+        if (message.length > 256) {
+            socket.emit("new-message", {
+                author: "SYSTEM",
+                color: "text-red-500",
+                message: "CANNOT SEND A MESSAGE LONGER THAN 256 CHARACTERS!"
+            });
+            return;
+        }
+
+        io.emit("new-message", {
+            author: user!.username,
+            message
+        });
+    });
+
+    socket.on("disconnect", () => {
+        console.log(`User '${user!.username} disconnected.`);
+    });
+});
+
+httpServer.listen(port, () => console.log(`Server running at port ${port}`));

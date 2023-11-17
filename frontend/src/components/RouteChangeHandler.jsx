@@ -1,8 +1,8 @@
 'use client';
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
 import { useGlobalStore } from "@/store/global";
+import { useEffect } from "react";
 
 export default function RouteChangeHandler() {
   const { startLoadingDelay } = useGlobalStore();

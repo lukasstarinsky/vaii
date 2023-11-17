@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const [formData, setFormData] = useState({username: "", password: ""});
   const [errors, setErrors] = useState([]);
-  const { setUser, user } = useUserStore();
+  const { setUser } = useUserStore();
   const router = useRouter();
 
   const Login = (event) => {
@@ -25,10 +25,6 @@ export default function Login() {
       setErrors(response.errors);
     });
   };
-
-  if (user.id) {
-    router.push("/");
-  }
 
   return (
     <div className="w-full px-4 md:w-9/12 md:px-0 xl:w-6/12">

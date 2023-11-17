@@ -7,8 +7,8 @@ import { Open_Sans } from "next/font/google";
 import { useGlobalStore } from "@/store/global";
 import { useUserStore } from "@/store/user";
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from 'next/navigation'
 import { config } from "@fortawesome/fontawesome-svg-core";
+import RouteChangeHandler from "@/components/RouteChangeHandler";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
 import * as AuthService from "@/services/AuthService";
@@ -21,26 +21,21 @@ const openSans = Open_Sans({
 });
 
 export default function RootLayout({ children }) {
-  const { isLoading, startLoading, stopLoading } = useGlobalStore();
+  const { isLoading } = useGlobalStore();
   const { setUser } = useUserStore();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
- 
-  useEffect(() => {
-    startLoading();
-  }, [pathname, searchParams])
 
   useEffect(() => {
     AuthService.CheckUser() 
       .then((response) => setUser(response.id, response.username))
       .catch(() => {})
-      .finally(() => stopLoading());
+      // .finally(() => stopLoading());
   }, []);
 
   return (
     <html lang="en" className={openSans.className}>
       <body className="flex flex-col">
         <Navbar />
+        <RouteChangeHandler />
 
         { isLoading && <Loading /> }
 

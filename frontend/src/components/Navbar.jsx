@@ -31,10 +31,16 @@ export default function Navbar() {
           </Link>
           </>
         :
+          <>
           <Link href="/" className="ms-5 text-neutral-500 hover:text-white">
             <FontAwesomeIcon icon={faComments} className="me-1" />
             Forum
           </Link>
+          <Link href="/" className="ms-5 text-neutral-500 hover:text-white">
+            <FontAwesomeIcon icon={faComments} className="me-1" />
+            Forum
+          </Link>
+          </>
         }
       </div>
 

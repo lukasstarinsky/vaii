@@ -5,6 +5,7 @@ import Section from "@/components/Section";
 import ForumCategory from "@/components/forum/ForumCategory";
 import ForumHeader from "@/components/forum/ForumHeader";
 import AuthSecure from "@/components/AuthSecure";
+import * as ForumService from "@/services/ForumService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState, useRef } from "react";
@@ -15,8 +16,14 @@ const Forum = () => {
   const divRef = useRef(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [categorySummary, setCategorySummary] = useState({});
 
   useEffect(() => {
+    // Todo try to use stopLoading
+    ForumService.GetSummary((data) => {
+      setCategorySummary(data);
+    });
+
     socket.connect();
 
     socket.on("new-message", (newMessage) => {
@@ -78,14 +85,9 @@ const Forum = () => {
       </Section>
 
       <Section header="General" className="my-10" contentClassName="p-3">
-        <ForumCategory style="border-l-fuchsia-500" title="news" description="Articles about new updates on web." />
-        <ForumCategory style="border-l-red-500" title="general" description="General discussion about any topic." />
-        <ForumCategory style="border-l-emerald-500" title="media" description="Share images and videos on various topics." />
-      </Section>
-      <Section header="General" className="my-10" contentClassName="p-3">
-        <ForumCategory style="border-l-fuchsia-500" title="news" description="Articles about new updates on web." />
-        <ForumCategory style="border-l-red-500" title="general" description="General discussion about any topic." />
-        <ForumCategory style="border-l-emerald-500" title="media" description="Share images and videos on various topics." />
+        <ForumCategory data={categorySummary["news"]} style="border-l-fuchsia-500" title="news" description="Articles about new updates on web." />
+        <ForumCategory data={categorySummary["general"]} style="border-l-red-500" title="general" description="General discussion about any topic." />
+        <ForumCategory data={categorySummary["media"]} style="border-l-emerald-500" title="media" description="Share images and videos on various topics." />
       </Section>
     </div>
   );

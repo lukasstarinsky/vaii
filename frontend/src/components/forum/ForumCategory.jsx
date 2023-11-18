@@ -1,6 +1,9 @@
 import Link from "next/link";
 
 export default function ForumCategory(props) {
+  if (!props.data)
+    return null;
+
   return (
     <Link href={`/forum/${props.title}`} className={`border-b border-l-4 ${props.style} hover:bg-gray-200 px-3 py-6 grid grid-cols-4`}>
       <div className="flex flex-col col-span-2 self-center">
@@ -8,13 +11,15 @@ export default function ForumCategory(props) {
         <span className="text-gray-500 text-sm">{props.description}</span>
       </div>
       <div className="hidden md:flex md:flex-col text-center">
-        <span className="font-bold text-md">300</span>
+        <span className="font-bold text-md">{props.data.threadCount}</span>
         <span className="text-gray-500 text-sm">Threads</span>
       </div>
-      <div className="flex flex-col text-xs self-center ms-4 md:ms-0 col-span-2 md:col-span-1">
-        <span className="font-bold truncate">How to innnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnt in lol [MEGATHREAD]</span>
-        <span className="text-gray-500">5 April 2023 • Miat</span>
-      </div>
+      { props.data.threadCount > 0 && 
+        <div className="flex flex-col text-xs self-center ms-4 md:ms-0 col-span-2 md:col-span-1">
+          <span className="font-bold truncate">{props.data.lastThread.title}</span>
+          <span className="text-gray-500">{new Date(props.data.lastThread.createdAt).toLocaleString("sk-SK")} • {props.data.lastThread.author}</span>
+        </div>
+      }
     </Link>
   );
 }

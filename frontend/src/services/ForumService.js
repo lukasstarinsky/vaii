@@ -1,4 +1,4 @@
-import { HTTP } from "@/services/HttpService";
+import { HTTP, DefaultErrorHandle } from "@/services/HttpService";
 
 export function CreateThread(data, onSuccess, onError) {
     HTTP.post(`forum/${data.category}`, { ...data })
@@ -11,4 +11,10 @@ export function CreateThread(data, onSuccess, onError) {
             else
                 onError(["Something went wrong."]);
         });
+}
+
+export function GetSummary(onSuccess) {
+    HTTP.get("forum")
+        .then((res) => onSuccess(res.data))
+        .catch((err) => DefaultErrorHandle(err));
 }

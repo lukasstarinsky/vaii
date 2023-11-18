@@ -13,9 +13,9 @@ export function LoginUser(formData, onSuccess, onError) {
             if (err.response)
                 onError(err.response.data);
             else if (err.request)
-                onError({ errors: [err.message] });
+                onError([err.message]);
             else
-                onError({ errors: ["Something went wrong."] });
+                onError(["Something went wrong."]);
         });
 }
 

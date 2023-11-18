@@ -45,6 +45,7 @@ app.use(passport.session());
 
 import * as Routes from "./routes";
 app.use("/api/auth", Routes.Auth);
+app.use("/api/forum", Routes.Forum);
 
 // 404
 app.use((req, res, next) => {
@@ -101,7 +102,7 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("disconnect", () => {
-        console.log(`User '${user!.username} disconnected.`);
+        console.log(`User '${user!.username}' disconnected.`);
     });
 });
 

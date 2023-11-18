@@ -5,11 +5,14 @@ import Section from "@/components/Section";
 import Input from "@/components/Input";
 import ForumHeader from "@/components/forum/ForumHeader";
 import TextEditor from "@/components/TextEditor";
+import * as ForumService from "@/services/ForumService";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ForumThreadCreate = () => {
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [errors, setErrors] = useState([]);
   const router = useRouter();
   const params = useParams();
 
@@ -19,9 +22,22 @@ const ForumThreadCreate = () => {
     media: "Share images and videos on various topics."
   };
   
-  const Test = (event) => {
+  const CreateThread = (event) => {
     event.preventDefault();
-    console.log(description);
+
+    if (description.length === 0) {
+      setErrors(["Description is required."]);
+      return
+    } else if (description.length < 16) {
+      setErrors(["Description must be atleast 16 characters long."]);
+      return;
+    }
+
+    ForumService.CreateThread({ description, title, category: params.category }, (threadId) => {
+      router.push(`/forum/${params.category}/${threadId}`);
+    }, (errors) => {
+      setErrors(errors);
+    });
   };
 
   useEffect(() => {
@@ -35,10 +51,12 @@ const ForumThreadCreate = () => {
       <ForumHeader header="Forum" description="Discuss different topics, chat with others, share ideas and help others." />
 
       <Section className="p-10 my-12" shadow={true}>
-        <form onSubmit={Test}>
+        <form onSubmit={CreateThread}>
           <div>
             <label htmlFor="title" className="block mb-2 text-sm font-medium">Title</label>
-            <Input id="title" type="text" placeholder="Title of your thread..." required minLength="4" autoComplete="off" />
+            <Input id="title" type="text" placeholder="Title of your thread..." required minLength="4" autoComplete="off"
+                   value={title}
+                   onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="mt-3">
             <label htmlFor="category" className="block mb-2 text-sm font-medium">Category</label>
@@ -50,6 +68,13 @@ const ForumThreadCreate = () => {
             <label htmlFor="description" className="block mb-2 text-sm font-medium">Description</label>
             <TextEditor className="bg-white" value={description} onChange={setDescription} />
           </div>
+          { errors && errors.length > 0 ?
+            <div className="bg-red-100 border border-red-400 text-red-700 mt-3 px-4 py-3 rounded relative" role="alert">
+              {errors.map((error, i) => (
+                <span key={i} className="block sm:inline">{error}<br /></span>
+              ))}
+            </div>
+          : <></>}
           <div className="mt-2">
             <Input type="submit" value="Create thread" className="mt-3 bg-gray-900 text-white" />
           </div>

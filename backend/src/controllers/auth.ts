@@ -21,13 +21,13 @@ export async function Login(req: Request, res: Response, next: NextFunction) {
 
     const validation = validationResult(req);
     if (!validation.isEmpty())
-        return res.status(400).send({ errors: validation.array().map(x => x.msg) });
+        return res.status(400).send(validation.array().map(x => x.msg));
 
     passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
         if (err)
             return next(err);
         else if (!user)
-            return res.status(400).send({ errors: [ info.message ]});
+            return res.status(400).send([ info.message ]);
 
         req.logIn(user, (err) => {
             if (err)
@@ -65,7 +65,7 @@ export async function Register(req: Request, res: Response, next: NextFunction) 
             errors.push("User with this username/email already exists.");
 
         if (errors.length > 0)
-            return res.status(400).send({ errors });
+            return res.status(400).send(errors);
 
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);

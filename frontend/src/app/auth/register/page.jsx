@@ -24,9 +24,9 @@ export default function Register() {
       setFormData({ username: "", email: "", password: "", passwordRepeat: "" });
       setIsSuccess(true);
       setErrors([]);
-    }, (response) => {
+    }, (errors) => {
       setFormData({ ...formData, password: "", passwordRepeat: "" });
-      setErrors(response.errors);
+      setErrors(errors);
     });
   }
 

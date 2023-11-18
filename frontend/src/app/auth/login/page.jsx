@@ -20,9 +20,9 @@ export default function Login() {
     AuthService.LoginUser(formData, (user) => {
       setUser(user.id, user.username);
       router.push("/");
-    }, (response) => {
+    }, (errors) => {
       setFormData({ ...formData, password: "" });
-      setErrors(response.errors);
+      setErrors(errors);
     });
   };
 

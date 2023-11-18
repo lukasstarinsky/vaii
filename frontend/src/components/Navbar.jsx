@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ export default function Navbar() {
   return (
     <nav className="bg-neutral-900 py-3 px-4 flex justify-between z-40 w-full sticky top-0">
       <div className="flex">
-        <Link href="/">
+        <Link href="/forum">
           <svg xmlns="http://www.w3.org/2000/svg" height="22" role="img" viewBox="0 0 74 64">
             <path d="M37.5896 0.25L74.5396 64.25H0.639648L37.5896 0.25Z" fill="#606060"></path>
           </svg>
@@ -48,7 +48,7 @@ export default function Navbar() {
             <FontAwesomeIcon icon={faAddressCard} className="me-1" />
             Profile
           </Link>
-          <Link href="/" className="ms-5 text-neutral-500 hover:text-white">
+          <Link href="/forum" className="ms-5 text-neutral-500 hover:text-white">
             <FontAwesomeIcon icon={faComments} className="me-1" />
             Forum
           </Link>

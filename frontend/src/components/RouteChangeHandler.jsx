@@ -2,13 +2,13 @@
 
 import { usePathname } from "next/navigation";
 import { useGlobalStore } from "@/store/global";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 export default function RouteChangeHandler() {
   const { startLoadingDelay } = useGlobalStore();
   const pathname = usePathname();
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     startLoadingDelay(250);
   }, [pathname]);
 

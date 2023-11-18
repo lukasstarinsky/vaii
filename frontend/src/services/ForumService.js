@@ -1,7 +1,7 @@
 import { HTTP } from "@/services/HttpService";
 
 export function CreateThread(data, onSuccess, onError) {
-    HTTP.post("forum", { ...data })
+    HTTP.post(`forum/${data.category}`, { ...data })
         .then((res) => onSuccess(res.data))
         .catch((err) => {
             if (err.response)

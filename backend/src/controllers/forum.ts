@@ -5,10 +5,6 @@ import { UserDocument } from "../models/User";
 
 export async function CreateThread(req: Request, res: Response, next: NextFunction) {
     try {
-        await body("category")
-            .notEmpty().withMessage("Category is required.")
-            .if(body("category").notEmpty())
-            .isIn(["news", "general", "media"]).withMessage("Invalid category selected.").run(req);
         await body("title")
             .notEmpty().withMessage("Title is required.")
             .if(body("title").notEmpty())
@@ -18,7 +14,12 @@ export async function CreateThread(req: Request, res: Response, next: NextFuncti
             .if(body("description").notEmpty())
             .isLength({ min: 16 }).withMessage("Description must be atleast 16 characters long.").run(req);
         
+        const category = req.params.category || "none";
         const errors: string[] = validationResult(req).array().map(x => x.msg);
+
+        if (!["news", "general", "media"].includes(category))
+            errors.push("Invalid category selected.");
+
         if (errors.length > 0)
             return res.status(400).send(errors);
 

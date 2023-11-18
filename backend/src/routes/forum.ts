@@ -3,6 +3,6 @@ import * as Forum from "../controllers/forum";
 
 const router = express.Router();
 
-router.post("/", Forum.CreateThread);
+router.post("/:category", Forum.CreateThread);
 
 export default router;

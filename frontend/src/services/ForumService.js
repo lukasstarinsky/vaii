@@ -24,3 +24,9 @@ export function GetThreads(category, onSuccess) {
         .then((res) => onSuccess(res.data))
         .catch((err) => DefaultErrorHandle(err));
 }
+
+export function GetThread(threadId, onSuccess) {
+    HTTP.get(`forum/thread/${threadId}`)
+        .then((res) => onSuccess(res.data))
+        .catch((err) => DefaultErrorHandle(err));
+}

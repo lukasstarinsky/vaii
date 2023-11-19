@@ -5,6 +5,10 @@ const router = express.Router();
 
 router.get("/", Forum.Summary);
 
+router.route("/thread/:threadId")
+      .get(Forum.GetThread)
+      .post(/*Forum.CreatePost*/);
+
 router.route("/category/:category")
       .get(Forum.GetThreads)
       .post(Forum.CreateThread);

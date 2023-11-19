@@ -41,6 +41,19 @@ export async function GetThreads(req: Request, res: Response, next: NextFunction
     }
 }
 
+export async function GetThread(req: Request, res: Response, next: NextFunction) {
+    try {
+        const thread = await Thread.findById(req.params.threadId).populate("author", "username");
+
+        if (!thread)
+            return res.status(404).send("Thread not found.");
+
+        res.status(200).send(thread);
+    } catch (err: any) {
+        next(err);
+    }
+}
+
 export async function CreateThread(req: Request, res: Response, next: NextFunction) {
     try {
         await body("title")

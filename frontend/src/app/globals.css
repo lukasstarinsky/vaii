@@ -9,6 +9,10 @@
   --section-background: #FBFBFD;
 }
 
+.ql-editor {
+  min-height: 200px !important;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

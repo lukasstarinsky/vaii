@@ -4,6 +4,7 @@
 import AuthSecure from "@/components/AuthSecure";
 import Section from "@/components/Section";
 import ForumHeader from "@/components/forum/ForumHeader";
+import Input from "@/components/Input";
 import Image from "next/image";
 import Link from "next/link";
 import TextEditor from "@/components/TextEditor";
@@ -69,8 +70,14 @@ const ForumThread = () => {
           </div>
         </div>
       </Section>
+      <style>{`
+        .ql-container {
+          border: 0 !important;
+        }
+      `}</style>
       <Section header="Reply" className="mb-12 mt-5">
-        <TextEditor className="rounded" />
+        <TextEditor />
+        <Input type="submit" value="Reply" className="mt-3 bg-gray-900 text-white rounded-t-none" />
       </Section>
     </div>
   );

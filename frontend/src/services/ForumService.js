@@ -1,7 +1,7 @@
 import { HTTP, DefaultErrorHandle } from "@/services/HttpService";
 
 export function CreateThread(data, onSuccess, onError) {
-    HTTP.post(`forum/${data.category}`, { ...data })
+    HTTP.post(`forum/category/${data.category}`, { ...data })
         .then((res) => onSuccess(res.data))
         .catch((err) => {
             if (err.response)
@@ -20,7 +20,7 @@ export function GetSummary(onSuccess) {
 }
 
 export function GetThreads(category, onSuccess) {
-    HTTP.get(`forum/${category}`)
+    HTTP.get(`forum/category/${category}`)
         .then((res) => onSuccess(res.data))
         .catch((err) => DefaultErrorHandle(err));
 }

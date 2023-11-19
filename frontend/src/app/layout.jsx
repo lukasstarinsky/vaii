@@ -2,6 +2,7 @@
 
 import "@fortawesome/fontawesome-svg-core/styles.css"; 
 import "./globals.css"
+import 'react-quill/dist/quill.snow.css';
 import "@/services/HttpService";
 import { Open_Sans } from "next/font/google";
 import { useGlobalStore } from "@/store/global";

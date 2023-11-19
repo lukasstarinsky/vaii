@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", Forum.Summary);
 
-router.route("/:category")
+router.route("/category/:category")
       .get(Forum.GetThreads)
       .post(Forum.CreateThread);
 

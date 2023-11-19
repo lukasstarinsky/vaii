@@ -6,7 +6,7 @@ export default function ForumThread(props) {
     return null;
 
   return (
-    <Link href={`/forum/${props.data.category}/${props.data._id}`} 
+    <Link href={`/forum/thread/${props.data._id}`} 
           className="hover:bg-gray-200 border-b px-3 py-6 grid grid-cols-4">
       <div className="flex flex-row col-span-2 items-center">
         <Image className="rounded" src="/avatar.png" width={48} height={48} alt="Avatar" />

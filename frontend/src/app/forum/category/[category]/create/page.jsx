@@ -34,7 +34,7 @@ const ForumThreadCreate = () => {
     }
 
     ForumService.CreateThread({ description, title, category: params.category }, (threadId) => {
-      router.push(`/forum/${params.category}/${threadId}`);
+      router.push(`/forum/thread/${threadId}`);
     }, (errors) => {
       setErrors(errors);
     });

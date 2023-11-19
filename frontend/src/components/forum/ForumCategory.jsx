@@ -5,7 +5,7 @@ export default function ForumCategory(props) {
     return null;
 
   return (
-    <Link href={`/forum/${props.title}`} className={`border-b border-l-4 ${props.style} hover:bg-gray-200 px-3 py-6 grid grid-cols-4`}>
+    <Link href={`/forum/category/${props.title}`} className={`border-b border-l-4 ${props.style} hover:bg-gray-200 px-3 py-6 grid grid-cols-4`}>
       <div className="flex flex-col col-span-2 self-center">
         <span className="font-bold text-md text-capitalize">{props.title}</span>
         <span className="text-gray-500 text-sm">{props.description}</span>

@@ -36,7 +36,7 @@ const ForumCategory = () => {
     <div className="w-full px-2 md:w-9/12 md:px-0 mt-12">
       <ForumHeader header={params.category} description={categories[params.category]} />
 
-      <Link href={`/forum/${params.category}/create`}>
+      <Link href={`/forum/category/${params.category}/create`}>
         <button className="rounded border border-1 mt-4 border-gray-900 hover:bg-gray-900 hover:text-white p-2 flex items-center">
           <FontAwesomeIcon icon={faPlus} />
           <span className="ms-2">Create Thread</span>

@@ -17,7 +17,7 @@ export default function ForumCategory(props) {
       { props.data.threadCount > 0 && 
         <div className="flex flex-col text-xs self-center ms-4 md:ms-0 col-span-2 md:col-span-1">
           <span className="font-bold truncate">{props.data.lastThread.title}</span>
-          <span className="text-gray-500">{new Date(props.data.lastThread.createdAt).toLocaleString("sk-SK")} • {props.data.lastThread.author}</span>
+          <span className="text-gray-500">{new Date(props.data.lastThread.createdAt).toLocaleString("sk-SK")} • {props.data.lastThread.author.username}</span>
         </div>
       }
     </Link>

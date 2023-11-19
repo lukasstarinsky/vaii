@@ -14,7 +14,7 @@ export default function Section(props) {
 
         <div className="flex justify-center flex-col text-center py-12">
           <FontAwesomeIcon icon={faFaceFrown} className="h-24 text-gray-900" /> 
-          <p className="text-xl mt-4 text-gray-500">This section is empty...</p>
+          <p className="text-xl mt-4 text-gray-900">This section is empty...</p>
         </div>
       </div>
     );

@@ -18,3 +18,9 @@ export function GetSummary(onSuccess) {
         .then((res) => onSuccess(res.data))
         .catch((err) => DefaultErrorHandle(err));
 }
+
+export function GetThreads(category, onSuccess) {
+    HTTP.get(`forum/${category}`)
+        .then((res) => onSuccess(res.data))
+        .catch((err) => DefaultErrorHandle(err));
+}

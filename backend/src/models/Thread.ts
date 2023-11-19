@@ -6,6 +6,7 @@ export type ThreadDocument = Document & {
     category: string,
     description: string,
     posts: Types.ObjectId[],
+    views: number,
     createdAt: Date,
     updatedAt: Date
 };
@@ -31,7 +32,12 @@ const threadSchema = new Schema<ThreadDocument>({
     posts: [{
         type: Schema.Types.ObjectId,
         ref: "post"
-    }]
+    }],
+    views: {
+        type: Number,
+        required: false,
+        default: 0
+    }
 }, { timestamps: true });
 
 export const Thread = model<ThreadDocument>("thread", threadSchema);

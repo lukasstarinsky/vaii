@@ -10,26 +10,32 @@ export async function Summary(req: Request, res: Response, next: NextFunction) {
         let summary: any = {};
         for (let category of validCategories) {
             const threadCount = await Thread.countDocuments({ category });
-            const lastThread = (await Thread.find({ category }).sort({ createdAt: -1 }).limit(1).populate("author")).at(0);
+            const lastThread = (await Thread.find({ category }).sort({ createdAt: -1 }).limit(1).populate("author", "username")).at(0);
 
             if (threadCount === 0) {
                 summary[category] = { threadCount };
                 continue;
             }
 
-            const author = lastThread!.author as unknown as UserDocument;
             summary[category] = {
                 threadCount,
-                lastThread: {
-                    id: lastThread!.id,
-                    title: lastThread!.title,
-                    createdAt: lastThread!.createdAt,
-                    author: author.username
-                }
+                lastThread
             };
         }
 
         res.status(200).send(summary);
+    } catch (err: any) {
+        next(err);
+    }
+}
+
+export async function GetThreads(req: Request, res: Response, next: NextFunction) {
+    try {
+        if (!validCategories.includes(req.params.category))
+            return res.status(400).send("Invalid category selected.");
+
+        const threads = await Thread.find({ category: req.params.category }).sort({ createdAt: -1 }).populate("author", "username");
+        res.status(200).send(threads);
     } catch (err: any) {
         next(err);
     }

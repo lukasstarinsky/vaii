@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/", Forum.Summary);
 
 router.route("/:category")
-      .get(/*Forum.GetThreads*/)
+      .get(Forum.GetThreads)
       .post(Forum.CreateThread);
 
 export default router;

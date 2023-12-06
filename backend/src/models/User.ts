@@ -1,9 +1,16 @@
 import { Schema, model, Document } from "mongoose";
 
+export enum UserRole {
+    USER,
+    MODERATOR,
+    ADMINISTRATOR
+};
+
 export type UserDocument = Document & {
     username: string,
     email: string,
     password: string,
+    role: UserRole
 };
 
 const userSchema = new Schema<UserDocument>({
@@ -20,6 +27,11 @@ const userSchema = new Schema<UserDocument>({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: Number,
+        requried: true,
+        default: UserRole.USER
     }
 }, { timestamps: true });
 

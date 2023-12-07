@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
+import cors from "cors";
 import "./config/passport";
 
 // Config
@@ -19,13 +20,10 @@ mongoose.connect(`${process.env.MONGO_DB_URL}`)
         process.exit(1);
     });
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:3000");
-    res.setHeader("Access-Control-Allow-Methods", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type"); 
-    next();
-})
+app.use(cors({
+    origin: "http://127.0.0.1:3000",
+    credentials: true
+}));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.json({ limit: "50mb" }));
 const sessionMiddleware = session({
@@ -81,10 +79,10 @@ io.on("connection", async (socket) => {
     const user = await User.findById((socket.request as any).session.passport.user);
     console.log(`User '${user!.username}' connected.`);
 
-    socket.emit("new-message", {
+    io.emit("new-message", {
         author: "SYSTEM",
         color: "text-gray-500",
-        message: "Connected to text chat."
+        message: `User ${user!.username} joined the chat.`
     });
 
     socket.on("message", (message) => {

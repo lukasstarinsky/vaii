@@ -37,6 +37,19 @@ export function DeleteThread(threadId, onSuccess) {
         .catch((err) => DefaultErrorHandle(err));
 }
 
+export function CreatePost(threadId, text, onSuccess, onError) {
+    HTTP.post(`forum/thread/${threadId}`, { text })
+        .then((res) => onSuccess(res.data))
+        .catch((err) => {
+            if (err.response)
+                onError(err.response.data);
+            else if (err.request)
+                onError([err.message]);
+            else
+                onError(["Something went wrong."]);
+        })
+}
+
 export function EditPost(postId, data, onSuccess, onError) {
     HTTP.patch(`forum/post/${postId}`, data)
         .then((res) => onSuccess(res.data))

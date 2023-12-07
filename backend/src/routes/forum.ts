@@ -10,7 +10,7 @@ router.route("/thread/:threadId")
       .all(Check.IsLoggedIn)
       .get(Forum.GetThread)
       .delete(Forum.DeleteThread)
-      .post(/*Forum.CreatePost*/);
+      .post(Forum.CreatePost);
 
 router.route("/post/:postId")
       .all(Check.IsLoggedIn)

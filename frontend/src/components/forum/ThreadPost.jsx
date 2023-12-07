@@ -25,8 +25,8 @@ export default function ThreadPost(props) {
   }, []);
   
   const SubmitEdit = () => {
-    if (editInput.length < 32) {
-      setErrors(["Text of the post must be atleast 32 characters long."]);
+    if (editInput.length < 16) {
+      setErrors(["Text of the post must be atleast 16 characters long."]);
       return;
     }
 

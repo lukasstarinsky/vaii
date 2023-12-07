@@ -55,6 +55,13 @@ export async function GetThread(req: Request, res: Response, next: NextFunction)
                 path: "author",
                 select: "username"
             }
+        }).populate({
+            path: "posts",
+            select: "author text",
+            populate: {
+                path: "author",
+                select: "username"
+            }
         });
         if (!thread)
             return res.status(404).send("Thread not found.");
@@ -74,7 +81,7 @@ export async function CreateThread(req: Request, res: Response, next: NextFuncti
         await body("description")
             .notEmpty().withMessage("Description is required.")
             .if(body("description").notEmpty())
-            .isLength({ min: 32 }).withMessage("Description must be atleast 16 characters long.").run(req);
+            .isLength({ min: 16 }).withMessage("Description must be atleast 16 characters long.").run(req);
         
         const category = req.params.category || "none";
         const errors: string[] = validationResult(req).array().map(x => x.msg);
@@ -119,9 +126,43 @@ export async function DeleteThread(req: Request, res: Response, next: NextFuncti
         if ((req.user! as UserDocument).id != thread!.author._id)
             return res.status(401).send("Unauthorized.");
 
+        for (let post of thread.posts) {
+            await Post.findByIdAndDelete(post);
+        }
+
         await thread.deleteOne();
         res.status(200).send("Thread deleted.");
     } catch (err: any) {
+        next(err);
+    }
+}
+
+export async function CreatePost(req: Request, res: Response, next: NextFunction) {
+    try {
+        await body("text")
+            .notEmpty().withMessage("Text of the post is required.")
+            .if(body("text").notEmpty())
+            .isLength({ min: 16 }).withMessage("Text of the post must be atleast 16 characters long.").run(req);
+
+        const errors: string[] = validationResult(req).array().map(x => x.msg);
+        if (errors.length > 0)
+            return res.status(400).send(errors);
+
+        if (!mongoose.isValidObjectId(req.params.threadId))
+            return res.status(404).send("Thread not found.");
+
+        const thread = await Thread.findById(req.params.threadId);
+        if (!thread)
+            return res.status(404).send("Thread not found.");
+
+        const newPost = new Post({
+            author: (req.user! as UserDocument).id,
+            text: req.body.text            
+        });
+        const post = await newPost.save();
+
+        await thread.updateOne({ $push: { posts: post.id } });
+    } catch(err: any) {
         next(err);
     }
 }
@@ -131,7 +172,7 @@ export async function UpdatePost(req: Request, res: Response, next: NextFunction
         await body("text")
             .notEmpty().withMessage("Text of the post is required.")
             .if(body("text").notEmpty())
-            .isLength({ min: 32 }).withMessage("Text of the post must be atleast 32 characters long.").run(req);
+            .isLength({ min: 16 }).withMessage("Text of the post must be atleast 16 characters long.").run(req);
 
         const errors: string[] = validationResult(req).array().map(x => x.msg);
         if (errors.length > 0)

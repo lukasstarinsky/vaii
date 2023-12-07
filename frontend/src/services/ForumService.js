@@ -30,3 +30,16 @@ export function GetThread(threadId, onSuccess) {
         .then((res) => onSuccess(res.data))
         .catch((err) => DefaultErrorHandle(err));
 }
+
+export function EditPost(postId, data, onSuccess, onError) {
+    HTTP.patch(`forum/post/${postId}`, data)
+        .then((res) => onSuccess(res.data))
+        .catch((err) => {
+            if (err.response)
+                onError(err.response.data);
+            else if (err.request)
+                onError([err.message]);
+            else
+                onError(["Something went wrong."]);
+        });
+}

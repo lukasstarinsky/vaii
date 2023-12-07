@@ -19,7 +19,8 @@ const threadSchema = new Schema<ThreadDocument>({
     },
     post: {
         type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "post"
     },
     title: {
         type: String,

@@ -48,8 +48,14 @@ export async function GetThread(req: Request, res: Response, next: NextFunction)
         if (!mongoose.isValidObjectId(req.params.threadId))
             return res.status(404).send("Thread not found.");
 
-        const thread = await Thread.findById(req.params.threadId).populate("author", "username");
-
+        const thread = await Thread.findById(req.params.threadId).populate("author", "username").populate({
+            path: "post",
+            select: "author text",
+            populate: {
+                path: "author",
+                select: "username"
+            }
+        });
         if (!thread)
             return res.status(404).send("Thread not found.");
 
@@ -68,7 +74,7 @@ export async function CreateThread(req: Request, res: Response, next: NextFuncti
         await body("description")
             .notEmpty().withMessage("Description is required.")
             .if(body("description").notEmpty())
-            .isLength({ min: 16 }).withMessage("Description must be atleast 16 characters long.").run(req);
+            .isLength({ min: 32 }).withMessage("Description must be atleast 16 characters long.").run(req);
         
         const category = req.params.category || "none";
         const errors: string[] = validationResult(req).array().map(x => x.msg);
@@ -115,28 +121,28 @@ export async function DeleteThread(req: Request, res: Response, next: NextFuncti
     }
 }
 
-export async function UpdateThread(req: Request, res: Response, next: NextFunction) {
+export async function UpdatePost(req: Request, res: Response, next: NextFunction) {
     try {
-        if (!mongoose.isValidObjectId(req.params.threadId))
-            return res.status(404).send("Thread not found.");
+        await body("text")
+            .notEmpty().withMessage("Text of the post is required.")
+            .if(body("text").notEmpty())
+            .isLength({ min: 32 }).withMessage("Text of the post must be atleast 32 characters long.").run(req);
 
-        const thread = await Thread.findById(req.params.threadId);
-        if (!thread)
-            return res.status(404).send("Thread not found.");
-        /* else if // Todo check admin rights/author */
+        const errors: string[] = validationResult(req).array().map(x => x.msg);
+        if (errors.length > 0)
+            return res.status(400).send(errors);
 
-        let update: any = {};
-        if (req.body.title)
-            update["title"] = req.body.title;
-        if (req.body.description)
-            update["description"] = req.body.description;
-        if (req.body.category) {
-            if (validCategories.includes(req.body.category))
-                update["category"] = req.body.category;
-        }
+        if (!mongoose.isValidObjectId(req.params.postId))
+            return res.status(404).send("Post not found.");
 
-        await thread.updateOne({ $set: update });
-        return res.status(200).send("Thread updated.");
+        const post = await Post.findById(req.params.postId);
+        if (!post)
+            return res.status(404).send("Post not found.");
+
+        const update = { text: req.body.text };
+        const updatedPost = await Post.findByIdAndUpdate(req.params.postId, { $set: update }, { new: true }).populate("author", "username");
+
+        return res.status(200).send(updatedPost);
     } catch (err: any) {
         next(err);
     }

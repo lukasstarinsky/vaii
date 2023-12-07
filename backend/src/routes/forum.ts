@@ -10,8 +10,11 @@ router.route("/thread/:threadId")
       .all(Check.IsLoggedIn)
       .get(Forum.GetThread)
       .delete(Forum.DeleteThread)
-      .patch(Forum.UpdateThread)
       .post(/*Forum.CreatePost*/);
+
+router.route("/post/:postId")
+      .all(Check.IsLoggedIn)
+      .patch(Forum.UpdatePost);
 
 router.route("/category/:category")
       .all(Check.IsLoggedIn)

@@ -28,7 +28,7 @@ const ForumThreadCreate = () => {
     if (description.length === 0) {
       setErrors(["Description is required."]);
       return
-    } else if (description.length < 16) {
+    } else if (description.length < 32) {
       setErrors(["Description must be atleast 16 characters long."]);
       return;
     }

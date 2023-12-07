@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { Thread, ThreadDocument } from "../models/Thread";
+import { Thread } from "../models/Thread";
+import { Post } from "../models/Post";
 import { body, validationResult } from "express-validator";
 import { UserDocument } from "../models/User";
 import mongoose from "mongoose";
@@ -79,11 +80,17 @@ export async function CreateThread(req: Request, res: Response, next: NextFuncti
             return res.status(400).send(errors);
 
         const { title, description } = req.body;
+        const newPost = new Post({
+            author: (req.user! as UserDocument).id,
+            text: description
+        });
+        const post = await newPost.save();
+
         const newThread = new Thread({
             author: (req.user! as UserDocument).id,
+            post: post.id,
             title,
-            category,
-            description 
+            category
         });
         await newThread.save();
 

@@ -2,9 +2,9 @@ import { Schema, model, Document, Types } from "mongoose";
 
 export type ThreadDocument = Document & {
     author: Types.ObjectId,
+    post: Types.ObjectId,
     title: string,
     category: string,
-    description: string,
     posts: Types.ObjectId[],
     views: number,
     createdAt: Date,
@@ -17,15 +17,15 @@ const threadSchema = new Schema<ThreadDocument>({
         required: true,
         ref: "user"
     },
+    post: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     title: {
         type: String,
         required: true
     },
     category: {
-        type: String,
-        required: true
-    },
-    description: {
         type: String,
         required: true
     },

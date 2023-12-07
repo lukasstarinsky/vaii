@@ -2,7 +2,9 @@ import { Schema, model, Document, Types } from "mongoose";
 
 export type PostDocument = Document & {
     author: Types.ObjectId,
-    text: string
+    text: string,
+    createdAt: Date,
+    updatedAt: Date
 };
 
 const postSchema = new Schema<PostDocument>({

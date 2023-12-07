@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { UserDocument, UserRole } from "../models/User";
 
-export function IsLoggedIn (req: Request, res: Response, next: NextFunction) {
+export function IsLoggedIn(req: Request, res: Response, next: NextFunction) {
     if (req.isAuthenticated()) {
         next();
     } else {
@@ -9,7 +9,7 @@ export function IsLoggedIn (req: Request, res: Response, next: NextFunction) {
     }
 }
   
-export function IsStaff (req: Request, res: Response, next: NextFunction) {
+export function IsStaff(req: Request, res: Response, next: NextFunction) {
     if (!req.isAuthenticated()) {
         return res.status(401).send("Unauthorized.");
     }

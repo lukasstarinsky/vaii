@@ -8,18 +8,29 @@ import Input from "@/components/Input";
 import TextEditor from "@/components/TextEditor";
 import ThreadPost from "@/components/forum/ThreadPost";
 import * as ForumService from "@/services/ForumService";
-import { useParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useUserStore } from "@/store/user";
 
 const ForumThread = () => {
   const [thread, setThread] = useState();
   const params = useParams();
+  const router = useRouter();
+  const { user } = useUserStore();
 
   useEffect(() => {
     ForumService.GetThread(params.thread, (data) => {
       setThread(data);
+    }, () => {
+      router.push("/forum");
     });
   }, []);
+
+  const DeleteThread = () => {
+    ForumService.DeleteThread(thread._id, () => {
+      router.push("/forum");
+    });
+  }
 
   return (
     <div className="w-full px-2 xl:w-9/12 xl:px-0 mt-12">
@@ -30,9 +41,14 @@ const ForumThread = () => {
         }
       `}</style>
 
-      <Section header="Thread" className="mt-12">
-        { thread && <ThreadPost data={thread.post} /> }
-      </Section>
+      <div className="mt-12">
+        { thread && user.id == thread.author._id &&
+          <Input type="submit" onClick={DeleteThread} value="Delete thread" className="font-semibold mb-2 hover:bg-red-500 outline outline-1 outline-red-500 text-red-500 hover:text-white" />
+        }
+        <Section header="Thread">
+          { thread && <ThreadPost data={thread.post} excludeDelete /> }
+        </Section>
+      </div>
       <Section header="Replies" className="mt-5">
       </Section>
       

@@ -25,9 +25,15 @@ export function GetThreads(category, onSuccess) {
         .catch((err) => DefaultErrorHandle(err));
 }
 
-export function GetThread(threadId, onSuccess) {
+export function GetThread(threadId, onSuccess, onError) {
     HTTP.get(`forum/thread/${threadId}`)
         .then((res) => onSuccess(res.data))
+        .catch(() => onError());
+}
+
+export function DeleteThread(threadId, onSuccess) {
+    HTTP.delete(`forum/thread/${threadId}`)
+        .then(() => onSuccess())
         .catch((err) => DefaultErrorHandle(err));
 }
 

@@ -75,8 +75,8 @@ export default function ThreadPost(props) {
           </div>
           { user.id == post.author._id && 
           <div className="self-end text-gray-900 me-4 text-xl cursor-pointer">
-            <FontAwesomeIcon onClick={StartEdit} className="me-3" icon={faPencil} />
-            <FontAwesomeIcon icon={faTrash} />
+            { !props.excludeDelete && <FontAwesomeIcon icon={faTrash} /> }
+            <FontAwesomeIcon onClick={StartEdit} className="ms-3" icon={faPencil} />
           </div>
           }
         </div>

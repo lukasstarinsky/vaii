@@ -111,11 +111,16 @@ export async function DeleteThread(req: Request, res: Response, next: NextFuncti
         if (!mongoose.isValidObjectId(req.params.threadId))
             return res.status(404).send("Thread not found.");
 
-        const deleted = await Thread.findByIdAndDelete(req.params.threadId);
-        if (deleted)
-            res.status(200).send("Thread deleted.");
-        else
-            res.status(404).send("Thread not found.");
+        const thread = await Thread.findById(req.params.threadId);
+
+        if (!thread)
+            return res.status(404).send("Thread not found.");
+
+        if ((req.user! as UserDocument).id != thread!.author._id)
+            return res.status(401).send("Unauthorized.");
+
+        await thread.deleteOne();
+        res.status(200).send("Thread deleted.");
     } catch (err: any) {
         next(err);
     }

@@ -42,7 +42,7 @@ const ForumThread = () => {
         </div>
       </Section>
       <Section header="Replies" className="mt-5">
-        <div className="flex flex-row p-4 hover:bg-gray-200 hover:rounded">
+        <div className="flex flex-row p-4 hover:bg-gray-200 hover:rounded items-center">
           <Link href="#" className="w-2/12 flex flex-col items-center text-center border-r">
             <span className="text-gray-900 font-bold mb-1">LSk</span>
             <Image className="rounded" src="/avatar2.png" width={96} height={96} alt="Avatar" />

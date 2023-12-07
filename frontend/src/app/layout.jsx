@@ -7,6 +7,7 @@ import "@/services/HttpService";
 import { Open_Sans } from "next/font/google";
 import { useGlobalStore } from "@/store/global";
 import { useUserStore } from "@/store/user";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import RouteChangeHandler from "@/components/RouteChangeHandler";
@@ -24,11 +25,15 @@ const openSans = Open_Sans({
 export default function RootLayout({ children }) {
   const { isLoading, isAuthLoading, stopAuthLoading } = useGlobalStore();
   const { setUser } = useUserStore();
+  const router = useRouter();
 
   useEffect(() => {
     AuthService.CheckUser((user) => {
       setUser(user.id, user.username);
       stopAuthLoading();
+    }, () => {
+      stopAuthLoading();
+      router.push("/auth/login");
     });
   }, []);
 

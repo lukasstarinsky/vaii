@@ -1,9 +1,9 @@
 import { HTTP, DefaultErrorHandle } from "@/services/HttpService";
 
-export function CheckUser(onSuccess) {
+export function CheckUser(onSuccess, onError) {
     HTTP.get("auth/check")
         .then((res) => onSuccess(res.data))
-        .catch(() => {});
+        .catch(() => onError());
 }
 
 export function LoginUser(formData, onSuccess, onError) {

@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 
 export async function Check(req: Request, res: Response, next: NextFunction) {
     if (!req.user)
-        return res.status(401).json({});
+        return res.status(401).send("Unauthorized.");
     
     res.status(200).send({
         id: (req.user as UserDocument).id,

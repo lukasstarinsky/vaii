@@ -1,7 +1,7 @@
 import { useUserStore } from "store/UserStore";
 import { Outlet, Navigate } from "react-router-dom";
 
-export default function AuthSecure() {
+export default function ProtectedRoute() {
   const { user } = useUserStore();
 
   if (!user.id) {

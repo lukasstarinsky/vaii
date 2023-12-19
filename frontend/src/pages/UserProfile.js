@@ -32,6 +32,8 @@ export default function UserProfile() {
     event.preventDefault();
 
     AdminService.BanUser(userId, { reason: banReason, hours: banLength }, (data) => {
+      setBanLength(0);
+      setBanReason("");
       setBanErrors([data]);
     }, (errors) => {
       setBanErrors(errors);

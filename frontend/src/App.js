@@ -9,6 +9,7 @@ import ForumThreadCreate from "pages/ForumThreadCreate";
 import UserProfile from "pages/UserProfile";
 import Administration from "pages/Administration";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AdminProtectedRoute from "components/AdminProtectedRoute";
 
 export default function App() {
   return (
@@ -23,7 +24,9 @@ export default function App() {
             <Route path="/user/:userId/profile" element={<UserProfile />} />
           </Route>
 
-          <Route path="/admin" element={<Administration />} />
+          <Route element={<AdminProtectedRoute />}>
+            <Route path="/admin" element={<Administration />} />
+          </Route>
 
           <Route path="/auth/login" element={<Login />}/>
           <Route path="/auth/register" element={<Register />}/>

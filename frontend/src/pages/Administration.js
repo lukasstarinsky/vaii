@@ -46,33 +46,33 @@ export default function Administration() {
   }
 
   return (
-    <div className="w-full px-2 md:w-9/12 md:px-0 mt-12">
+    <div className="w-full mt-12">
       <ForumHeader header="Administration" description="" />
 
       <Section header="Bans" className="mt-8">
-        <table className="w-full text-left border-gray-900 border-x">
+        <table className="table-auto w-full text-left border-gray-900 border-x">
           <thead className="text-xs uppercase bg-gray-900 text-white">
             <tr>
-              <th scope="col" className="px-6 py-3">#</th>
-              <th scope="col" className="px-6 py-3">From</th>
+              <th scope="col" className="px-6 py-3 hidden lg:table-cell">#</th>
+              <th scope="col" className="px-6 py-3 hidden lg:table-cell">From</th>
               <th scope="col" className="px-6 py-3">To</th>
               <th scope="col" className="px-6 py-3">Reason</th>
-              <th scope="col" className="px-6 py-3">End</th>
+              <th scope="col" className="px-6 py-3 hidden lg:table-cell">End</th>
               <th scope="col" className="px-6 py-3">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="w-full">
             { adminData.bans.map((ban, i) => (
               <tr key={i} className="bg-white border-gray-900 border-b">
-                <td className="px-6 py-3">{ban._id}</td>
-                <td className="px-6 py-3 underline underline-offset-2"><Link to={`/user/${ban.from._id}/profile`}>{ban.from.username}</Link></td>
+                <td className="px-6 py-3 hidden lg:table-cell">{ban._id}</td>
+                <td className="px-6 py-3 underline hidden lg:table-cell underline-offset-2"><Link to={`/user/${ban.from._id}/profile`}>{ban.from.username}</Link></td>
                 <td className="px-6 py-3 underline underline-offset-2"><Link to={`/user/${ban.user._id}/profile`}>{ban.user.username}</Link></td>
                 { banEditTarget ?
                   <Input className="py-3 mt-1" value={banEditReason} onChange={(e) => setBanEditReason(e.target.value)} />
                 :
                   <td className="px-6 py-3">{ban.reason}</td>
                 }
-                <td className="px-6 py-3">{ban.dateTo}</td>
+                <td className="px-6 py-3 hidden lg:table-cell">{ban.dateTo}</td>
                 <td className="px-6 py-3 cursor-pointer">
                   { banEditTarget ?
                     <>
@@ -94,10 +94,10 @@ export default function Administration() {
         </table>
       </Section>
       <Section header="Users" className="mt-8">
-        <table className="w-full text-left border-gray-900 border-x">
+        <table className="table-auto w-full text-left border-gray-900 border-x">
           <thead className="text-xs uppercase bg-gray-900 text-white">
             <tr>
-              <th scope="col" className="px-6 py-3">#</th>
+              <th scope="col" className="px-6 py-3 hidden md:table-cell">#</th>
               <th scope="col" className="px-6 py-3">Username</th>
               <th scope="col" className="px-6 py-3">Role</th>
               <th scope="col" className="px-6 py-3">Actions</th>
@@ -106,7 +106,7 @@ export default function Administration() {
           <tbody>
             { adminData.users.map((user, i) => (
               <tr key={i} className="bg-white border-gray-900 border-b">
-                <td className="px-6 py-3">{user._id}</td>
+                <td className="px-6 py-3 hidden md:table-cell">{user._id}</td>
                 <td className="px-6 py-3 underline underline-offset-2"><Link to={`/user/${user._id}/profile`}>{user.username}</Link></td>
                 <td className="px-6 py-3">{user.role}</td>
                 <td className="px-6 py-3 cursor-pointer">

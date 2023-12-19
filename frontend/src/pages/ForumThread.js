@@ -48,7 +48,7 @@ export default function ForumThread() {
 
   return (
     <div className="w-full px-2 xl:w-9/12 xl:px-0 mt-12">
-      <ForumHeader header="How to code in c++" />
+      <ForumHeader header={thread.title} />
       <style>{`
         .ql-container {
           border: 0 !important;

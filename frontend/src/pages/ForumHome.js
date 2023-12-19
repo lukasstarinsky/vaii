@@ -49,7 +49,7 @@ export default function ForumHome() {
 
   return (
     <div className="w-full px-2 md:w-9/12 md:px-0 mt-12">
-      <ForumHeader />
+      <ForumHeader header="Forum" />
 
       <span className="hidden text-red-500"></span>
 

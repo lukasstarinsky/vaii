@@ -28,6 +28,14 @@ html, body {
   text-transform: capitalize;
 }
 
+.block {
+  display: block;
+}
+
+.flex {
+  display: flex;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(var(--background-rgb));

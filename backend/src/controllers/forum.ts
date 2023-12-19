@@ -187,7 +187,7 @@ export async function UpdatePost(req: Request, res: Response, next: NextFunction
             return res.status(401).send("Unauthorized.");
 
         const update = { text: req.body.text };
-        const updatedPost = await Post.findByIdAndUpdate(req.params.postId, { $set: update }, { new: true }).populate("author", "username role");
+        const updatedPost = await Post.findByIdAndUpdate(req.params.postId, { $set: update }, { new: true }).populate("author", "username role avatar");
 
         return res.status(200).send(updatedPost);
     } catch (err: any) {
@@ -207,6 +207,8 @@ export async function DeletePost(req: Request, res: Response, next: NextFunction
 
         if ((req.user! as UserDocument).id != post.author._id && !Check.IsModerator(req.user! as UserDocument))
             return res.status(401).send("Unauthorized.");
+
+        await Thread.updateMany({}, { $pull: { posts: post.id } });
         
         // let update: any = {};
         // if (Check.IsAdmin(req.user! as UserDocument)) {

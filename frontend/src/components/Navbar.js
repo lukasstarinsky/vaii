@@ -52,7 +52,7 @@ export default function Navbar() {
           { IsAdmin() &&
             <Link to="/admin" className="ms-5 text-neutral-500 hover:text-white">
               <FontAwesomeIcon icon={faUserTie} className="me-1" />
-              Administration
+              Admin
             </Link>
           }
           </>

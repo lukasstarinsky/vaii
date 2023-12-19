@@ -14,7 +14,8 @@ router.route("/thread/:threadId")
 
 router.route("/post/:postId")
       .all(Check.IsLoggedIn)
-      .patch(Forum.UpdatePost);
+      .patch(Forum.UpdatePost)
+      .delete(Forum.DeletePost);
 
 router.route("/category/:category")
       .all(Check.IsLoggedIn)

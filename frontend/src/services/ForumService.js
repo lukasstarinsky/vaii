@@ -41,3 +41,9 @@ export function EditPost(postId, data, onSuccess, onError) {
         .then((res) => onSuccess(res.data))
         .catch((err) => onError(ExtractErrors(err)));
 }
+
+export function DeletePost(postId, onSuccess) {
+    HTTP.delete(`forum/post/${postId}`)
+        .then(() => onSuccess())
+        .catch((err) => DefaultErrorHandle(err));
+}

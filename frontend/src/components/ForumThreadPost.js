@@ -7,6 +7,7 @@ import { useUserStore } from "store/UserStore";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 export default function ThreadPost(props) {
   const [post, setPost] = useState();
@@ -14,6 +15,7 @@ export default function ThreadPost(props) {
   const [editInput, setEditInput] = useState("");
   const [errors, setErrors] = useState([]);
   const { user, IsModerator } = useUserStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setPost(props.data);
@@ -32,6 +34,12 @@ export default function ThreadPost(props) {
       setErrors(errors);
     });
   };
+
+  const DeletePost = () => {
+    ForumService.DeletePost(post._id, () => {
+      navigate(0);
+    });
+  }
 
   const StartEdit = () => {
     setIsBeingEdited(true);
@@ -71,7 +79,7 @@ export default function ThreadPost(props) {
             { !props.excludeDelete &&
               <>
                 { (user.id == post.author._id || IsModerator()) && 
-                  <FontAwesomeIcon icon={faTrash} />
+                  <FontAwesomeIcon onClick={DeletePost} icon={faTrash} />
                 }
               </>
             }

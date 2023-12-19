@@ -117,7 +117,7 @@ export async function DeleteThread(req: Request, res: Response, next: NextFuncti
         if (!thread)
             return res.status(404).send("Thread not found.");
 
-        if ((req.user! as UserDocument).id != thread!.author._id && !Check.IsModerator(req.user! as UserDocument))
+        if ((req.user! as UserDocument).id != thread.author._id && !Check.IsModerator(req.user! as UserDocument))
             return res.status(401).send("Unauthorized.");
 
         for (let post of thread.posts) {
@@ -154,8 +154,10 @@ export async function CreatePost(req: Request, res: Response, next: NextFunction
             text: req.body.text            
         });
         const post = await newPost.save();
-
+        await post.populate("author", "username role");
         await thread.updateOne({ $push: { posts: post.id } });
+
+        res.status(201).send(post);
     } catch(err: any) {
         next(err);
     }
@@ -186,6 +188,37 @@ export async function UpdatePost(req: Request, res: Response, next: NextFunction
         const updatedPost = await Post.findByIdAndUpdate(req.params.postId, { $set: update }, { new: true }).populate("author", "username role");
 
         return res.status(200).send(updatedPost);
+    } catch (err: any) {
+        next(err);
+    }
+}
+
+export async function DeletePost(req: Request, res: Response, next: NextFunction) {
+    try {
+        if (!mongoose.isValidObjectId(req.params.postId))
+            return res.status(404).send("Post not found.");
+
+        const post = await Post.findById(req.params.postId);
+
+        if (!post)
+            return res.status(404).send("Post not found.");
+
+        if ((req.user! as UserDocument).id != post.author._id && !Check.IsModerator(req.user! as UserDocument))
+            return res.status(401).send("Unauthorized.");
+        
+        // let update: any = {};
+        // if (Check.IsAdmin(req.user! as UserDocument)) {
+        //     update["text"] = `<h1><strong>THIS POST WAS REMOVED BY AN ADMINISTRATOR</strong></h1>`;
+        // } else if (Check.IsModerator(req.user! as UserDocument)) {
+        //     update["text"] = `<h1><strong>THIS POST WAS REMOVED BY A MODERATOR AUTHOR.</strong></h1>`;
+        // } else {
+        //     update["text"] = `<h1><strong>THIS POST WAS REMOVED BY THE AUTHOR.</strong></h1>`;
+        // }
+        
+        // const updatedPost = await Post.findByIdAndUpdate(req.params.postId, { $set: update }, { new: true }).populate("author", "username role");
+
+        await post.deleteOne();
+        res.status(200).send("Post deleted.");
     } catch (err: any) {
         next(err);
     }

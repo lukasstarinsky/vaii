@@ -37,7 +37,7 @@ export default function ForumThread() {
     }
 
     ForumService.CreatePost(thread._id, replyText, (newPost) => {
-      setThread((oldThread) => ({...oldThread, posts: [...oldThread.posts, newPost]}));
+      navigate(0);
     }, (errors) => {
       setErrors(errors);
     });
@@ -63,7 +63,7 @@ export default function ForumThread() {
           <ForumThreadPost data={thread.posts[0]} excludeDelete />
         </Section>
       </div>
-      <Section empty={thread.posts.length === 0} header="Replies" className="mt-5">
+      <Section empty={thread.posts.slice(1).length === 0} header="Replies" className="mt-5">
         {thread.posts.slice(1).map((post, i) => (
           <div key={i}>
             <ForumThreadPost data={post} />

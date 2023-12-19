@@ -40,6 +40,18 @@ export default function UserProfile() {
     });
   }
 
+  const PromoteUser = () => {
+    AdminService.PromoteUser(userId, () => {
+      navigate(0);
+    });
+  }
+
+  const DeleteUser = () => {
+    AdminService.DeleteUser(userId, () => {
+      navigate("/admin");
+    });
+  }
+
   if (!userProfile) {
     return null;
   }
@@ -87,8 +99,8 @@ export default function UserProfile() {
       </Section>
       { IsAdmin() &&
         <Section header="Danger zone" className="my-10" contentClassName="p-8">
-          <Input type="submit" value="Promote to moderator" className="font-semibold mb-2 hover:bg-gray-900 outline outline-1 outline-gray-900 text-gray-900 hover:text-white" />
-          <Input type="submit" value="Delete account" className="font-semibold mb-2 hover:bg-red-500 outline outline-1 outline-red-500 text-red-500 hover:text-white" />
+          <Input type="submit" onClick={PromoteUser} value="Promote to moderator" className="font-semibold mb-2 hover:bg-gray-900 outline outline-1 outline-gray-900 text-gray-900 hover:text-white" />
+          <Input type="submit" onClick={DeleteUser} value="Delete account" className="font-semibold mb-2 hover:bg-red-500 outline outline-1 outline-red-500 text-red-500 hover:text-white" />
           <hr />
           <form onSubmit={BanUser} className="mt-4">
             <label htmlFor="banLength" className="font-semibold">Length of the ban in hours</label>

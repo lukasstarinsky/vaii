@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 import mongoose from "mongoose";
-import { User, UserDocument } from "../models/User";
+import { User, UserDocument, UserRole } from "../models/User";
 import { Thread } from "../models/Thread";
 import { Ban } from "../models/Ban";
+import { Post } from "../models/Post";
 
 export async function GetAdminData(req: Request, res: Response, next: NextFunction) {
     try {
@@ -61,6 +62,46 @@ export async function BanUser(req: Request, res: Response, next: NextFunction) {
         await ban.save();
 
         res.status(200).send(["User banned."]);
+    } catch (err: any) {
+        next(err);
+    }
+}
+
+export async function PromoteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+        if (!mongoose.isValidObjectId(req.params.userId)) {
+            return res.status(404).send(["User not found."]);
+        }
+
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).send(["User not found."]);
+        }
+        user.role = user.role != UserRole.ADMINISTRATOR ? UserRole.MODERATOR : user.role;
+        await user.save();
+
+        res.status(200).send(["User promoted to moderator."]);
+    } catch (err: any) {
+        next(err);
+    }
+}
+
+export async function DeleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+        if (!mongoose.isValidObjectId(req.params.userId)) {
+            return res.status(404).send("User not found.");
+        }
+
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).send("User not found.");
+        }
+        await user.deleteOne();
+        await Post.deleteMany({ author: user.id });
+        await Ban.deleteMany({ user: user.id });
+        await Thread.deleteMany({ author: user.id });
+
+        res.status(200).send(["User deleted."]);
     } catch (err: any) {
         next(err);
     }

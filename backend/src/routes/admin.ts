@@ -12,6 +12,14 @@ router.route("/user/:userId/ban")
       .all(Check.IsAdmin)
       .patch(Admin.BanUser);
 
+router.route("/user/:userId/promote")
+      .all(Check.IsAdmin)
+      .patch(Admin.PromoteUser);
+
+router.route("/user/:userId")
+      .all(Check.IsAdmin)
+      .delete(Admin.DeleteUser);
+
 router.route("/ban/:banId")
       .all(Check.IsAdmin)
       .patch(Admin.EditBan)

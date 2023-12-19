@@ -6,6 +6,18 @@ export function GetAdminData(onSuccess) {
         .catch((err) => DefaultErrorHandle(err));
 }
 
+export function PromoteUser(userId, onSuccess) {
+    HTTP.patch(`admin/user/${userId}/promote`)
+        .then(() => onSuccess())
+        .catch((err) => DefaultErrorHandle(err));
+}
+
+export function DeleteUser(userId, onSuccess) {
+    HTTP.delete(`admin/user/${userId}`)
+        .then(() => onSuccess())
+        .catch((err) => DefaultErrorHandle(err));
+}
+
 export function BanUser(userId, data, onSuccess, onError) {
     HTTP.patch(`admin/user/${userId}/ban`, data)
         .then((res) => onSuccess(res.data))

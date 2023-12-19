@@ -11,7 +11,7 @@ export default function AuthCheck() {
 
   useEffect(() => {
     AuthService.CheckUser((user) => {
-      setUser(user.id, user.username);
+      setUser(user.id, user.username, user.role);
       stopAuthLoading();
     }, () => {
       stopAuthLoading();

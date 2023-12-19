@@ -11,7 +11,8 @@ export async function Check(req: Request, res: Response, next: NextFunction) {
     
     res.status(200).send({
         id: (req.user as UserDocument).id,
-        username: (req.user as UserDocument).username
+        username: (req.user as UserDocument).username,
+        role: (req.user as UserDocument).role
     });
 }
 
@@ -36,6 +37,7 @@ export async function Login(req: Request, res: Response, next: NextFunction) {
             return res.status(200).json({
                 id: user.id,
                 username: user.username,
+                role: user.role
             });
         });
     })(req, res, next);

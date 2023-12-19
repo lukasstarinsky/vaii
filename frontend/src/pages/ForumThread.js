@@ -13,7 +13,7 @@ export default function ForumThread() {
   const [errors, setErrors] = useState([]);
   const [replyText, setReplyText] = useState("");
   const { id } = useParams();
-  const { user } = useUserStore();
+  const { user, IsModerator } = useUserStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,31 +56,31 @@ export default function ForumThread() {
       `}</style>
 
       <div className="mt-12">
-        { user.id == thread.author._id &&
+        { (user.id == thread.author._id || IsModerator()) &&
           <Input type="submit" onClick={DeleteThread} value="Delete thread" className="font-semibold mb-2 hover:bg-red-500 outline outline-1 outline-red-500 text-red-500 hover:text-white" />
         }
         <Section header="Thread">
-          <ForumThreadPost data={thread.post} excludeDelete />
+          <ForumThreadPost data={thread.posts[0]} excludeDelete />
         </Section>
       </div>
-      <Section header="Replies" className="mt-5">
-        {thread.posts.map((post, i) => (
-          <>
+      <Section empty={thread.posts.length === 0} header="Replies" className="mt-5">
+        {thread.posts.slice(1).map((post, i) => (
+          <div key={i}>
             <ForumThreadPost data={post} />
             <hr />
-          </>
+          </div>
         ))}
       </Section>
       
       <Section header="Reply" className="mb-12 mt-5">
         <TextEditor value={replyText} onChange={setReplyText} />
-        { errors && errors.length > 0 ?
+        { (errors && errors.length > 0) &&
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             {errors.map((error, i) => (
               <span key={i} className="block sm:inline">{error}<br /></span>
             ))}
           </div>
-        : <></>}
+        }
         <Input onClick={CreatePost} type="submit" value="Reply" className="bg-gray-900 text-white rounded-t-none" />
       </Section>
     </div>

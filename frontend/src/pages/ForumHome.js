@@ -27,7 +27,11 @@ export default function ForumHome() {
         posted: new Date().toLocaleDateString("sk-SK")
       };
       setMessages(curr => [...curr, newMessage]);
-    })
+    });
+
+    return function cleanup() {
+      socket.disconnect();
+    }
   }, []);
 
   const SendMessage = (event) => {

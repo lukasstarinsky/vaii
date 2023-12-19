@@ -3,6 +3,7 @@ import { Thread } from "../models/Thread";
 import { Post } from "../models/Post";
 import { body, validationResult } from "express-validator";
 import { UserDocument } from "../models/User";
+import * as Check from "../utilities/roles";
 import mongoose from "mongoose";
 
 const validCategories = ["news", "general", "media"];
@@ -49,18 +50,11 @@ export async function GetThread(req: Request, res: Response, next: NextFunction)
             return res.status(404).send("Thread not found.");
 
         const thread = await Thread.findById(req.params.threadId).populate("author", "username").populate({
-            path: "post",
-            select: "author text",
-            populate: {
-                path: "author",
-                select: "username"
-            }
-        }).populate({
             path: "posts",
             select: "author text",
             populate: {
                 path: "author",
-                select: "username"
+                select: "username role"
             }
         });
         if (!thread)
@@ -101,7 +95,7 @@ export async function CreateThread(req: Request, res: Response, next: NextFuncti
 
         const newThread = new Thread({
             author: (req.user! as UserDocument).id,
-            post: post.id,
+            posts: [post.id],
             title,
             category
         });
@@ -123,7 +117,7 @@ export async function DeleteThread(req: Request, res: Response, next: NextFuncti
         if (!thread)
             return res.status(404).send("Thread not found.");
 
-        if ((req.user! as UserDocument).id != thread!.author._id)
+        if ((req.user! as UserDocument).id != thread!.author._id && !Check.IsModerator(req.user! as UserDocument))
             return res.status(401).send("Unauthorized.");
 
         for (let post of thread.posts) {
@@ -185,8 +179,11 @@ export async function UpdatePost(req: Request, res: Response, next: NextFunction
         if (!post)
             return res.status(404).send("Post not found.");
 
+        if ((req.user! as UserDocument).id != post.author._id && !Check.IsModerator(req.user! as UserDocument))
+            return res.status(401).send("Unauthorized.");
+
         const update = { text: req.body.text };
-        const updatedPost = await Post.findByIdAndUpdate(req.params.postId, { $set: update }, { new: true }).populate("author", "username");
+        const updatedPost = await Post.findByIdAndUpdate(req.params.postId, { $set: update }, { new: true }).populate("author", "username role");
 
         return res.status(200).send(updatedPost);
     } catch (err: any) {

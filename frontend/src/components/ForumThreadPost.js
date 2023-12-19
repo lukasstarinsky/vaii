@@ -1,4 +1,5 @@
 import TextEditor from "./TextEditor";
+import RoleBadge from "./RoleBadge";
 import Input from "./Input";
 import * as ForumService from "services/ForumService";
 import { Link } from "react-router-dom";
@@ -12,7 +13,7 @@ export default function ThreadPost(props) {
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [editInput, setEditInput] = useState("");
   const [errors, setErrors] = useState([]);
-  const { user } = useUserStore();
+  const { user, IsModerator } = useUserStore();
 
   useEffect(() => {
     setPost(props.data);
@@ -59,21 +60,23 @@ export default function ThreadPost(props) {
         <Link to="#" className="w-2/12 flex flex-col items-center text-center border-r">
           <span className="text-gray-900 font-bold mb-1">{post.author.username}</span>
           <img className="rounded" src="/avatar2.png" width={96} height={96} alt="Avatar" />
-          <div className="bg-red-500 px-4 py-1 rounded text-white font-semibold mt-2">
-            <span className="text-sm">Administrator</span>
-          </div>
+          <RoleBadge role={post.author.role} />
         </Link>
         <div className="flex flex-col w-10/12">
           <div className="ql-container ql-snow !border-0">
             <div className="ql-editor" dangerouslySetInnerHTML={{ __html: post.text }}>
             </div>
           </div>
-          { user.id == post.author._id && 
           <div className="self-end text-gray-900 me-4 text-xl cursor-pointer">
-            { !props.excludeDelete && <FontAwesomeIcon icon={faTrash} /> }
-            <FontAwesomeIcon onClick={StartEdit} className="ms-3" icon={faPencil} />
+            { !props.excludeDelete &&
+              <>
+                { (user.id == post.author._id || IsModerator()) && 
+                  <FontAwesomeIcon icon={faTrash} />
+                }
+              </>
+            }
+            { user.id == post.author._id && <FontAwesomeIcon onClick={StartEdit} className="ms-3" icon={faPencil} /> }
           </div>
-          }
         </div>
       </div>
       : <></>}

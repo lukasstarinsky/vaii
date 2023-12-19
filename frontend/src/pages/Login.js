@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "store/UserStore";
 import Input from "components/Input";
+import ErrorsBar from "components/ErrorsBar";
 import Section from "components/Section";
 import * as AuthService from "services/AuthService";
 
@@ -42,14 +43,7 @@ export default function Login() {
                   onChange={(e) => setFormData(formData => ({...formData, password: e.target.value}))} />
           </div>
 
-          { errors && errors.length > 0 ?
-            <div className="bg-red-100 border border-red-400 text-red-700 mt-3 px-4 py-3 rounded relative" role="alert">
-              {errors.map((error, i) => (
-                <span key={i} className="block sm:inline">{error}<br /></span>
-              ))}
-            </div>
-          : <></>}
-
+          <ErrorsBar errors={errors} />
           <Input type="submit" value="Login" className="mt-3 bg-gray-900 text-white" />
           <h2 className="mt-4">Don't have an account? <Link to="/auth/register" className="underline">Sign up</Link>.</h2>
         </form>

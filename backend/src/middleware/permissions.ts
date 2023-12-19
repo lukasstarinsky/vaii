@@ -21,3 +21,16 @@ export function IsStaff(req: Request, res: Response, next: NextFunction) {
         res.status(401).send("Unauthorized.");
     }
 }
+
+export function IsAdmin(req: Request, res: Response, next: NextFunction) {
+    if (!req.isAuthenticated()) {
+        return res.status(401).send("Unauthorized.");
+    }
+
+    const user = req.user as UserDocument;
+    if (user.role == UserRole.ADMINISTRATOR) {
+        next();
+    } else {
+        res.status(401).send("Unauthorized.");
+    }
+}

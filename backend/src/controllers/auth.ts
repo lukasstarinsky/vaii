@@ -4,10 +4,18 @@ import { User, UserDocument } from "../models/User";
 import { IVerifyOptions } from "passport-local";
 import passport from "passport";
 import bcrypt from "bcrypt";
+import { Ban } from "../models/Ban";
 
 export async function Check(req: Request, res: Response, next: NextFunction) {
     if (!req.user)
         return res.status(401).send("Unauthorized.");
+
+    const bans = await Ban.find({ user: (req.user as UserDocument).id });
+    for (let ban of bans) {
+        if (ban.dateTo > new Date()) {
+            return res.status(401).send("Unauthorized."); 
+        }
+    }
     
     res.status(200).send({
         id: (req.user as UserDocument).id,
@@ -24,11 +32,18 @@ export async function Login(req: Request, res: Response, next: NextFunction) {
     if (!validation.isEmpty())
         return res.status(400).send(validation.array().map(x => x.msg));
 
-    passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
+    passport.authenticate("local", async (err: Error, user: UserDocument, info: IVerifyOptions) => {
         if (err)
             return next(err);
         else if (!user)
             return res.status(400).send([ info.message ]);
+
+        const bans = await Ban.find({ user: user.id });
+        for (let ban of bans) {
+            if (ban.dateTo > new Date()) {
+                return res.status(400).send([`This user is banned until ${new Date(ban.dateTo).toLocaleString()} for reason: ${ban.reason}.`]);
+            }
+        }
 
         req.logIn(user, (err) => {
             if (err)

@@ -1,5 +1,6 @@
 import Input from "components/Input";
 import Section from "components/Section";
+import ErrorsBar from "components/ErrorsBar";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import * as AuthService from "services/AuthService";
@@ -60,14 +61,7 @@ export default function Register() {
                     onChange={(e) => setFormData({ ...formData, passwordRepeat: e.target.value })} />
           </div>
 
-          { errors && errors.length > 0 ?
-            <div className="bg-red-100 border border-red-400 text-red-700 mt-3 px-4 py-3 rounded relative" role="alert">
-              {errors.map((error, i) => (
-                <span key={i} className="block sm:inline">{error}<br /></span>
-              ))}
-            </div>
-          : <></>}
-
+          <ErrorsBar errors={errors} />
           { isSuccess && 
             <div className="bg-green-100 border border-green-400 text-green-700 mt-3 px-4 py-3 rounded relative" role="alert">
               <span className="block sm:inline">Account created.</span>

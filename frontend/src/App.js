@@ -5,9 +5,10 @@ import ForumThread from "pages/ForumThread";
 import ForumCategory from "pages/ForumCategory";
 import Register from "pages/Register";
 import ProtectedRoute from "components/ProtectedRoute";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ForumThreadCreate from "pages/ForumThreadCreate";
 import UserProfile from "pages/UserProfile";
+import Administration from "pages/Administration";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function App() {
   return (
@@ -21,6 +22,8 @@ export default function App() {
             <Route path="/forum/category/:category/create" element={<ForumThreadCreate />} />
             <Route path="/user/:userId/profile" element={<UserProfile />} />
           </Route>
+
+          <Route path="/admin" element={<Administration />} />
 
           <Route path="/auth/login" element={<Login />}/>
           <Route path="/auth/register" element={<Register />}/>

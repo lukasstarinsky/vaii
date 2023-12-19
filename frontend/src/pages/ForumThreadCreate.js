@@ -1,6 +1,7 @@
 import Section from "components/Section";
 import Input from "components/Input";
 import ForumHeader from "components/ForumHeader";
+import ErrorsBar from "components/ErrorsBar";
 import TextEditor from "components/TextEditor";
 import * as ForumService from "services/ForumService";
 import { useEffect, useState } from "react";
@@ -65,13 +66,7 @@ export default function ForumThreadCreate() {
             <label htmlFor="description" className="block mb-2 text-sm font-medium">Description</label>
             <TextEditor className="bg-white" value={description} onChange={setDescription} />
           </div>
-          { errors && errors.length > 0 ?
-            <div className="bg-red-100 border border-red-400 text-red-700 mt-3 px-4 py-3 rounded relative" role="alert">
-              {errors.map((error, i) => (
-                <span key={i} className="block sm:inline">{error}<br /></span>
-              ))}
-            </div>
-          : <></>}
+          <ErrorsBar errors={errors} />
           <div className="mt-2">
             <Input type="submit" value="Create thread" className="mt-3 bg-gray-900 text-white" />
           </div>

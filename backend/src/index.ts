@@ -47,6 +47,7 @@ import * as Routes from "./routes";
 app.use("/api/auth", Routes.Auth);
 app.use("/api/forum", Routes.Forum);
 app.use("/api/user", Routes.User);
+app.use("/api/admin", Routes.Admin);
 app.use(express.static("public"));
 
 // 404

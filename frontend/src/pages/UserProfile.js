@@ -3,16 +3,22 @@ import Section from "components/Section";
 import RoleBadge from "components/RoleBadge";
 import Input from "components/Input";
 import * as UserService from "services/UserService";
+import * as AdminService from "services/AdminService";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useUserStore } from "store/UserStore";
+import ErrorsBar from "components/ErrorsBar";
 
 export default function UserProfile() {
   const navigate = useNavigate();
   const { IsAdmin } = useUserStore();
   const { userId } = useParams();
   const [userProfile, setUserProfile] = useState(null);
+
+  const [banLength, setBanLength] = useState(0);
+  const [banReason, setBanReason] = useState("");
+  const [banErrors, setBanErrors] = useState([]);
   
   useEffect(() => {
     UserService.GetUserProfile(userId, (data) => {
@@ -25,7 +31,11 @@ export default function UserProfile() {
   const BanUser = (event) => {
     event.preventDefault();
 
-
+    AdminService.BanUser(userId, { reason: banReason, hours: banLength }, (data) => {
+      setBanErrors([data]);
+    }, (errors) => {
+      setBanErrors(errors);
+    });
   }
 
   if (!userProfile) {
@@ -78,10 +88,14 @@ export default function UserProfile() {
           <Input type="submit" value="Promote to moderator" className="font-semibold mb-2 hover:bg-gray-900 outline outline-1 outline-gray-900 text-gray-900 hover:text-white" />
           <Input type="submit" value="Delete account" className="font-semibold mb-2 hover:bg-red-500 outline outline-1 outline-red-500 text-red-500 hover:text-white" />
           <hr />
-          <form onSubmit={BanUser}>
-            <Input type="number" placeholder="Number of hours to ban this user for" className="mt-2" required min={1} />
-            <Input type="text" placeholder="Reason for ban" className="mt-2" required minLength={8} />
-            <Input type="submit" value="Ban user" className="font-semibold my-2 hover:bg-red-500 outline outline-1 outline-red-500 text-red-500 hover:text-white" />
+          <form onSubmit={BanUser} className="mt-4">
+            <label htmlFor="banLength" className="font-semibold">Length of the ban in hours</label>
+            <Input type="number" placeholder="Number of hours to ban this user for" className="mt-2" required min={1}
+                  value={banLength} onChange={(e) => setBanLength(e.target.value)} />
+            <Input type="text" placeholder="Reason for ban" className="mt-2" required minLength={8}
+                  value={banReason} onChange={(e) => setBanReason(e.target.value)} />
+            <ErrorsBar errors={banErrors} />
+            <Input type="submit" value="Ban user" className="font-semibold my-2 bg-red-500 text-white" />
           </form>
         </Section>
       }

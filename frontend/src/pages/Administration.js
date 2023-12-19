@@ -2,18 +2,44 @@ import ForumHeader from "components/ForumHeader";
 import Section from "components/Section";
 import * as AdminService from "services/AdminService";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faHammer, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faEye, faPencil, faX } from "@fortawesome/free-solid-svg-icons";
+import Input from "components/Input";
 
 export default function Administration() {
+  const navigate = useNavigate();
   const [adminData, setAdminData] = useState(null);
+  const [banEditTarget, setBanEditTarget] = useState(null);
+  const [banEditReason, setBanEditReason] = useState("");
 
   useEffect(() => {
     AdminService.GetAdminData((data) => {
       setAdminData(data);
     });
   }, []);
+
+  const SubmitBanEdit = () => {
+    AdminService.EditBan(banEditTarget._id, banEditReason, () => {
+      navigate(0);
+    });
+  }
+
+  const RevokeBan = (ban) => {
+    AdminService.RevokeBan(ban._id, () => {
+      navigate(0);
+    });
+  }
+
+  const StartBanEdit = (ban) => {
+    setBanEditTarget(ban);
+    setBanEditReason(ban.reason);
+  }
+
+  const StopBanEdit = () => {
+    setBanEditTarget(null);
+    setBanEditReason("");
+  }
 
   if (!adminData) {
     return null;
@@ -24,9 +50,50 @@ export default function Administration() {
       <ForumHeader header="Administration" description="" />
 
       <Section header="Bans" className="mt-8">
-
+        <table className="w-full text-left border-gray-900 border-x">
+          <thead className="text-xs uppercase bg-gray-900 text-white">
+            <tr>
+              <th scope="col" className="px-6 py-3">#</th>
+              <th scope="col" className="px-6 py-3">From</th>
+              <th scope="col" className="px-6 py-3">To</th>
+              <th scope="col" className="px-6 py-3">Reason</th>
+              <th scope="col" className="px-6 py-3">End</th>
+              <th scope="col" className="px-6 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            { adminData.bans.map((ban, i) => (
+              <tr key={i} className="bg-white border-gray-900 border-b">
+                <td className="px-6 py-3">{ban._id}</td>
+                <td className="px-6 py-3 underline underline-offset-2"><Link to={`/user/${ban.from._id}/profile`}>{ban.from.username}</Link></td>
+                <td className="px-6 py-3 underline underline-offset-2"><Link to={`/user/${ban.user._id}/profile`}>{ban.user.username}</Link></td>
+                { banEditTarget ?
+                  <Input className="py-3 mt-1" value={banEditReason} onChange={(e) => setBanEditReason(e.target.value)} />
+                :
+                  <td className="px-6 py-3">{ban.reason}</td>
+                }
+                <td className="px-6 py-3">{ban.dateTo}</td>
+                <td className="px-6 py-3 cursor-pointer">
+                  { banEditTarget ?
+                    <>
+                    <FontAwesomeIcon onClick={StopBanEdit} icon={faX} className="!h-6 me-2" title="Cancel edit" />
+                    <FontAwesomeIcon onClick={SubmitBanEdit} icon={faCheck} className="!h-6" title="Confirm edit" />
+                    </>
+                  :
+                    <>
+                    { new Date(ban.dateTo) > new Date() &&
+                      <FontAwesomeIcon onClick={() => RevokeBan(ban)} icon={faX} className="!h-6 me-2" title="Revoke ban" />
+                    }
+                    <FontAwesomeIcon onClick={() => StartBanEdit(ban)} icon={faPencil} className="!h-6" title="Edit ban" />
+                    </>
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </Section>
-      <Section header="Users" className="mt-8" contentClassName="p-6">
+      <Section header="Users" className="mt-8">
         <table className="w-full text-left border-gray-900 border-x">
           <thead className="text-xs uppercase bg-gray-900 text-white">
             <tr>

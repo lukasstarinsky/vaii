@@ -3,15 +3,15 @@ import { body, validationResult } from "express-validator";
 import mongoose from "mongoose";
 import { User, UserDocument } from "../models/User";
 import { Thread } from "../models/Thread";
-import { Post } from "../models/Post";
 import { Ban } from "../models/Ban";
 
 export async function GetAdminData(req: Request, res: Response, next: NextFunction) {
     try {
         const users = await User.find({}, "-password");
+        const bans = await Ban.find({}).populate("from", "-password").populate("user", "-password");
         const threads = await Thread.find({}).populate("author", "-password");
 
-        res.status(200).send({ users, threads });
+        res.status(200).send({ users, threads, bans });
     } catch (err: any) {
         next(err);
     }
@@ -61,6 +61,45 @@ export async function BanUser(req: Request, res: Response, next: NextFunction) {
         await ban.save();
 
         res.status(200).send(["User banned."]);
+    } catch (err: any) {
+        next(err);
+    }
+}
+
+export async function EditBan(req: Request, res: Response, next: NextFunction) {
+    try {
+        if (!mongoose.isValidObjectId(req.params.banId)) {
+            return res.status(404).send(["Ban not found."]);
+        }
+
+        const ban = await Ban.findById(req.params.banId);
+        if (!ban) {
+            res.status(404).send("Ban not found.");
+        }
+        
+        const { newReason } = req.body;
+        ban!.reason = newReason;
+        await ban!.save();
+
+        res.status(200).send("Ban edited.");
+    } catch (err: any) {
+        next(err);
+    }
+}
+
+export async function RevokeBan(req: Request, res: Response, next: NextFunction) {
+    try {
+        if (!mongoose.isValidObjectId(req.params.banId)) {
+            return res.status(404).send(["Ban not found."]);
+        }
+
+        const ban = await Ban.findById(req.params.banId);
+        if (!ban) {
+            res.status(404).send("Ban not found.");
+        }
+        await ban!.deleteOne();
+
+        res.status(200).send("Ban revoked.");
     } catch (err: any) {
         next(err);
     }

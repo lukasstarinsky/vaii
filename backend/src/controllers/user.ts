@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { User } from "../models/User";
 import { Thread } from "../models/Thread";
 import { Post } from "../models/Post";
+import { Ban } from "../models/Ban";
 
 export async function GetProfile(req: Request, res: Response, next: NextFunction) {
     try {
@@ -15,7 +16,7 @@ export async function GetProfile(req: Request, res: Response, next: NextFunction
 
         const threadCount = await Thread.countDocuments({ author: req.params.userId });
         const postCount = await Post.countDocuments({ author: req.params.userId });
-        const banCount = 0;
+        const banCount = await Ban.countDocuments({ user: req.params.userId });
 
         res.status(200).send({ ...(user as any)._doc, threadCount, postCount, banCount });
     } catch (err: any) {

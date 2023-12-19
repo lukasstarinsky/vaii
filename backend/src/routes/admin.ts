@@ -12,4 +12,9 @@ router.route("/user/:userId/ban")
       .all(Check.IsAdmin)
       .patch(Admin.BanUser);
 
+router.route("/ban/:banId")
+      .all(Check.IsAdmin)
+      .patch(Admin.EditBan)
+      .delete(Admin.RevokeBan);
+
 export default router;

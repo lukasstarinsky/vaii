@@ -65,7 +65,7 @@ export default function ThreadPost(props) {
       </>
       :
       <div className="flex flex-col lg:flex-row p-4 hover:bg-gray-200 hover:rounded">
-        <Link to="#" className="w-full lg:w-2/12 flex flex-col items-center text-center border-b pb-2 lg:border-r">
+        <Link to="#" className="w-full lg:w-2/12 flex flex-col items-center text-center border-b pb-2 lg:border-b-0 lg:border-r">
           <span className="text-gray-900 font-bold mb-1">{post.author.username}</span>
           <img className="rounded" src={post.author.avatar} width={96} height={96} alt="Avatar" />
           <RoleBadge role={post.author.role} />

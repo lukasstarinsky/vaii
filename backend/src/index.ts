@@ -80,6 +80,12 @@ io.use(wrapper(sessionMiddleware));
 
 io.on("connection", async (socket) => {
     const user = await User.findById((socket.request as any).session.passport.user);
+
+    if (!user) {
+        socket.disconnect(true);
+        return;
+    }
+
     console.log(`User '${user!.username}' connected.`);
 
     io.emit("new-message", {

@@ -1,16 +1,14 @@
-'use client';
-
-import { usePathname } from "next/navigation";
-import { useGlobalStore } from "@/store/global";
+import { useGlobalStore } from "store/GlobalStore";
 import { useLayoutEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function RouteChangeHandler() {
   const { startLoadingDelay } = useGlobalStore();
-  const pathname = usePathname();
+  const location = useLocation();
   
   useLayoutEffect(() => {
     startLoadingDelay(250);
-  }, [pathname]);
+  }, [location]);
 
   return null;
 }

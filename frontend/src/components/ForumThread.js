@@ -1,15 +1,12 @@
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
+import "./ForumThread.css";
 
 export default function ForumThread(props) {
-  if (!props.data)
-    return null;
-
   return (
-    <Link href={`/forum/thread/${props.data._id}`} 
+    <Link to={`/forum/thread/${props.data._id}`} 
           className="hover:bg-gray-200 border-b px-3 py-6 grid grid-cols-4">
       <div className="flex flex-row col-span-2 items-center">
-        <Image className="rounded" src="/avatar.png" width={48} height={48} alt="Avatar" />
+        <img className="rounded forum-thread-author-avatar" src="/avatar.png" alt="Avatar" />
         <div className="flex flex-col ms-3">
           <span className="font-bold text-md forum-category-title">{props.data.title}</span>
           <span className="text-gray-500 text-sm">{props.data.author.username} • {new Date(props.data.createdAt).toLocaleString("sk-SK")}</span>

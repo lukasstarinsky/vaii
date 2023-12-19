@@ -1,10 +1,8 @@
-'use client';
-
-import Input from "@/components/Input";
-import Section from "@/components/Section";
-import Link from "next/link";
+import Input from "components/Input";
+import Section from "components/Section";
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import * as AuthService from "@/services/AuthService";
+import * as AuthService from "services/AuthService";
 
 export default function Register() {
   const [formData, setFormData] = useState({username: "", email: "", password: "", passwordRepeat: ""});
@@ -77,7 +75,7 @@ export default function Register() {
           }
 
           <Input type="submit" value="Create an account" className="mt-3 bg-gray-900 text-white" />
-          <h2 className="mt-4">Have an account? <Link href="/auth/login" className="underline">Sign in</Link>.</h2>
+          <h2 className="mt-4">Have an account? <Link to="/auth/login" className="underline">Sign in</Link>.</h2>
         </form>
       </Section>
     </div>

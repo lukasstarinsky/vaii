@@ -1,25 +1,23 @@
-'use client';
-
-import Input from "@/components/Input";
-import Section from "@/components/Section";
-import Link from "next/link";
-import * as AuthService from "@/services/AuthService";
-import { useUserStore } from "@/store/user";
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "store/UserStore";
+import Input from "components/Input";
+import Section from "components/Section";
+import * as AuthService from "services/AuthService";
 
 export default function Login() {
   const [formData, setFormData] = useState({username: "", password: ""});
   const [errors, setErrors] = useState([]);
   const { setUser } = useUserStore();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const Login = (event) => {
     event.preventDefault();
 
     AuthService.LoginUser(formData, (user) => {
       setUser(user.id, user.username);
-      router.push("/");
+      navigate("/");
     }, (errors) => {
       setFormData({ ...formData, password: "" });
       setErrors(errors);
@@ -53,7 +51,7 @@ export default function Login() {
           : <></>}
 
           <Input type="submit" value="Login" className="mt-3 bg-gray-900 text-white" />
-          <h2 className="mt-4">Don't have an account? <Link href="/auth/register" className="underline">Sign up</Link>.</h2>
+          <h2 className="mt-4">Don't have an account? <Link to="/auth/register" className="underline">Sign up</Link>.</h2>
         </form>
       </Section>
     </div>

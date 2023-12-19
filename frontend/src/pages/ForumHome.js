@@ -1,47 +1,34 @@
-'use client';
-
-import Input from "@/components/Input";
-import Section from "@/components/Section";
-import ForumCategory from "@/components/forum/ForumCategory";
-import ForumHeader from "@/components/forum/ForumHeader";
-import AuthSecure from "@/components/AuthSecure";
-import * as ForumService from "@/services/ForumService";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ForumCategory from "components/ForumCategory";
+import ForumHeader from "components/ForumHeader";
+import Section from "components/Section";
+import Input from "components/Input";
+import * as ForumService from "services/ForumService";
+import { socket } from "utilities/socket";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState, useRef } from "react";
-import { socket } from "@/utilities/socket";
-import "./forum.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useRef, useState } from "react";
+import "./ForumHome.css";
 
-const Forum = () => {
-  const divRef = useRef(null);
+export default function ForumHome() {
+  const shoutBoxDivRef = useRef(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [categorySummary, setCategorySummary] = useState({});
 
   useEffect(() => {
-    // Todo try to use stopLoading
     ForumService.GetSummary((data) => {
       setCategorySummary(data);
     });
 
     socket.connect();
-
     socket.on("new-message", (newMessage) => {
       newMessage = {
         ...newMessage,
-        posted: new Date().toLocaleString("sk-SK")
+        posted: new Date().toLocaleDateString("sk-SK")
       };
       setMessages(curr => [...curr, newMessage]);
-    });
-    
-    return () => {
-      socket.disconnect();
-    }
+    })
   }, []);
-  
-  useEffect(() => {    
-    divRef.current.scrollTo({ top: messages.length * 90, behavior: "smooth" });
-  }, [messages]);
 
   const SendMessage = (event) => {
     event.preventDefault();
@@ -50,16 +37,22 @@ const Forum = () => {
       socket.emit("message", message);
       setMessage("");
     }
-  }
+  };
+
+  useEffect(() => {
+    shoutBoxDivRef.current.scrollTo({ top: messages.length * 90, behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="w-full px-2 md:w-9/12 md:px-0 mt-12">
-      <ForumHeader header="Forum" description="Discuss different topics, chat with others, share ideas and help others." />
+      <ForumHeader />
+
+      <span className="hidden text-red-500"></span>
 
       <Section header="Shoutbox" className="mt-12">
-        <div className="forum-shoutbox-content p-3 text-sm" ref={divRef}>
+        <div className="forum-shoutbox-content p-3 text-sm" ref={shoutBoxDivRef}>
           { messages && messages.length > 0 ? messages.map((inMessage, i) => (
-              inMessage.author == "SYSTEM" ?
+              inMessage.author === "SYSTEM" ?
                 <p key={i} className="break-words border-b-1">
                   <span className="text-xs text-gray-500">{inMessage.posted}: </span>
                   <span className={`${inMessage.color} font-bold`}>{inMessage.message}</span>
@@ -92,5 +85,3 @@ const Forum = () => {
     </div>
   );
 }
-
-export default AuthSecure(Forum); 

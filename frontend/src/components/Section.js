@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./Section.css";
 import { faFaceFrown } from "@fortawesome/free-solid-svg-icons";
+import "./Section.css";
 
 export default function Section(props) {
-  if (props.empty)
+  if (props.empty) {
     return (
       <div className={`rounded border border-1 section border-gray-900 ${props.className} ${props.shadow ? "section-shadow": ""}`}>
         { props.header && 
@@ -13,11 +13,12 @@ export default function Section(props) {
         }
 
         <div className="flex justify-center flex-col text-center py-12">
-          <FontAwesomeIcon icon={faFaceFrown} className="h-24 text-gray-900" /> 
+          <FontAwesomeIcon icon={faFaceFrown} className="!h-24 text-gray-900" /> 
           <p className="text-xl mt-4 text-gray-900">This section is empty...</p>
         </div>
       </div>
     );
+  }
   
   return (
     <div className={`rounded border border-1 section border-gray-900 ${props.className} ${props.shadow ? "section-shadow": ""}`}>

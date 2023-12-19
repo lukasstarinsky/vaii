@@ -5,13 +5,25 @@ axios.defaults.withCredentials = true;
 
 const DefaultErrorHandle = (err) => {
     alert("Something went wrong. Check console for more information.");
-    if (err.response && err.response.status == 500)
+    if (err.response && err.response.status === 500) {
         console.error(err.response);
-    else if (err.request)
+    } else if (err.request) {
         console.error(err.request);
-    else
+    } else {
         console.error(err.message);
+    }
 }
+
+const ExtractErrors = (err) => {
+    if (err.response) {
+        return err.response.data;
+    } else if (err.request) {
+        return [err.message];
+    } else {
+        return ["Something went wrong."];
+    }
+}
+
 const HTTP = axios;
 
-export { HTTP, DefaultErrorHandle };
+export { HTTP, DefaultErrorHandle, ExtractErrors };

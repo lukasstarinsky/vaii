@@ -1,11 +1,8 @@
-'use client';
-
-import TextEditor from "../TextEditor";
-import Link from "next/link";
-import Image from "next/image";
-import Input from "../Input";
-import * as ForumService from "@/services/ForumService";
-import { useUserStore } from "@/store/user";
+import TextEditor from "./TextEditor";
+import Input from "./Input";
+import * as ForumService from "services/ForumService";
+import { Link } from "react-router-dom";
+import { useUserStore } from "store/UserStore";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -16,9 +13,6 @@ export default function ThreadPost(props) {
   const [editInput, setEditInput] = useState("");
   const [errors, setErrors] = useState([]);
   const { user } = useUserStore();
-
-  if (!props.data)
-    return null;
 
   useEffect(() => {
     setPost(props.data);
@@ -37,6 +31,7 @@ export default function ThreadPost(props) {
       setErrors(errors);
     });
   };
+
   const StartEdit = () => {
     setIsBeingEdited(true);
     setEditInput(post.text);
@@ -61,14 +56,14 @@ export default function ThreadPost(props) {
       </>
       :
       <div className="flex flex-row p-4 hover:bg-gray-200 hover:rounded">
-        <Link href="#" className="w-2/12 flex flex-col items-center text-center border-r">
+        <Link to="#" className="w-2/12 flex flex-col items-center text-center border-r">
           <span className="text-gray-900 font-bold mb-1">{post.author.username}</span>
-          <Image className="rounded" src="/avatar2.png" width={96} height={96} alt="Avatar" />
+          <img className="rounded" src="/avatar2.png" width={96} height={96} alt="Avatar" />
           <div className="bg-red-500 px-4 py-1 rounded text-white font-semibold mt-2">
             <span className="text-sm">Administrator</span>
           </div>
         </Link>
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-10/12">
           <div className="ql-container ql-snow !border-0">
             <div className="ql-editor" dangerouslySetInnerHTML={{ __html: post.text }}>
             </div>

@@ -1,20 +1,17 @@
-'use client';
-
-import AuthSecure from "@/components/AuthSecure";
-import Section from "@/components/Section";
-import Input from "@/components/Input";
-import ForumHeader from "@/components/forum/ForumHeader";
-import TextEditor from "@/components/TextEditor";
-import * as ForumService from "@/services/ForumService";
-import { useRouter, useParams } from "next/navigation";
+import Section from "components/Section";
+import Input from "components/Input";
+import ForumHeader from "components/ForumHeader";
+import TextEditor from "components/TextEditor";
+import * as ForumService from "services/ForumService";
 import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
-const ForumThreadCreate = () => {
+export default function ForumThreadCreate() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState([]);
-  const router = useRouter();
-  const params = useParams();
+  const { category } = useParams();
+  const navigate = useNavigate();
 
   const categories = {
     news: "Articles about new updates on web.",
@@ -33,16 +30,16 @@ const ForumThreadCreate = () => {
       return;
     }
 
-    ForumService.CreateThread({ description, title, category: params.category }, (threadId) => {
-      router.push(`/forum/thread/${threadId}`);
+    ForumService.CreateThread({ description, title, category: category }, (threadId) => {
+      navigate(`/forum/thread/${threadId}`);
     }, (errors) => {
       setErrors(errors);
     });
   };
 
   useEffect(() => {
-    if (!categories[params.category]) {
-      router.push("/forum");
+    if (!categories[category]) {
+      navigate("/forum");
     }
   }, []);
 
@@ -61,7 +58,7 @@ const ForumThreadCreate = () => {
           <div className="mt-3">
             <label htmlFor="category" className="block mb-2 text-sm font-medium">Category</label>
             <select id="category" disabled className="bg-neutral-200 text-capitalize focus:outline-none border p-2.5 border-neutral-600 text-black text-sm rounded w-full">
-              <option value={params.category}>{params.category}</option>
+              <option value={category}>{category}</option>
             </select>
           </div>
           <div className="mt-3">
@@ -83,5 +80,3 @@ const ForumThreadCreate = () => {
     </div>
   );
 }
-
-export default AuthSecure(ForumThreadCreate);

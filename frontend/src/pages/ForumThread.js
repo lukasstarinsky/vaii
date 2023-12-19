@@ -1,36 +1,32 @@
-
-'use client';
-
-import AuthSecure from "@/components/AuthSecure";
-import Section from "@/components/Section";
-import ForumHeader from "@/components/forum/ForumHeader";
-import Input from "@/components/Input";
-import TextEditor from "@/components/TextEditor";
-import ThreadPost from "@/components/forum/ThreadPost";
-import * as ForumService from "@/services/ForumService";
-import { useRouter, useParams } from "next/navigation";
+import Section from "components/Section";
+import ForumHeader from "components/ForumHeader";
+import Input from "components/Input";
+import TextEditor from "components/TextEditor";
+import ForumThreadPost from "components/ForumThreadPost";
+import * as ForumService from "services/ForumService";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useUserStore } from "@/store/user";
+import { useUserStore } from "store/UserStore";
 
-const ForumThread = () => {
+export default function ForumThread() {
   const [thread, setThread] = useState();
   const [errors, setErrors] = useState([]);
   const [replyText, setReplyText] = useState("");
-  const params = useParams();
-  const router = useRouter();
+  const { id } = useParams();
   const { user } = useUserStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    ForumService.GetThread(params.thread, (data) => {
+    ForumService.GetThread(id, (data) => {
       setThread(data);
     }, () => {
-      router.push("/forum");
+      navigate("/");
     });
   }, []);
 
   const DeleteThread = () => {
     ForumService.DeleteThread(thread._id, () => {
-      router.push("/forum");
+      navigate("/");
     });
   };
 
@@ -47,6 +43,9 @@ const ForumThread = () => {
     });
   };
 
+  if (!thread)
+    return null;
+
   return (
     <div className="w-full px-2 xl:w-9/12 xl:px-0 mt-12">
       <ForumHeader header="How to code in c++" />
@@ -57,21 +56,20 @@ const ForumThread = () => {
       `}</style>
 
       <div className="mt-12">
-        { thread && user.id == thread.author._id &&
+        { user.id == thread.author._id &&
           <Input type="submit" onClick={DeleteThread} value="Delete thread" className="font-semibold mb-2 hover:bg-red-500 outline outline-1 outline-red-500 text-red-500 hover:text-white" />
         }
         <Section header="Thread">
-          { thread && <ThreadPost data={thread.post} excludeDelete /> }
+          <ForumThreadPost data={thread.post} excludeDelete />
         </Section>
       </div>
       <Section header="Replies" className="mt-5">
-        { thread &&
+        {thread.posts.map((post, i) => (
           <>
-          {thread.posts.map((post, i) => (
-            <ThreadPost data={post} />
-          ))}
+            <ForumThreadPost data={post} />
+            <hr />
           </>
-        }
+        ))}
       </Section>
       
       <Section header="Reply" className="mb-12 mt-5">
@@ -88,5 +86,3 @@ const ForumThread = () => {
     </div>
   );
 }
-
-export default AuthSecure(ForumThread);

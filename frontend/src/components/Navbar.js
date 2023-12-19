@@ -1,13 +1,13 @@
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faAddressCard, faComments, faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faAddressCard, faComments, faSignInAlt, faUserPlus, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useUserStore } from "store/UserStore";
 import * as AuthService from "services/AuthService";
 
 export default function Navbar() {
   const [dropdown, setDropdown] = useState(false);
-  const { user, setUser } = useUserStore();
+  const { user, setUser, IsAdmin } = useUserStore();
   const navigate = useNavigate();
 
   const Logout = (event) => {
@@ -49,6 +49,12 @@ export default function Navbar() {
             <FontAwesomeIcon icon={faComments} className="me-1" />
             Forum
           </Link>
+          { IsAdmin() &&
+            <Link to="/admin" className="ms-5 text-neutral-500 hover:text-white">
+              <FontAwesomeIcon icon={faUserTie} className="me-1" />
+              Administration
+            </Link>
+          }
           </>
         }
       </div>

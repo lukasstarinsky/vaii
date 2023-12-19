@@ -37,7 +37,7 @@ export async function GetThreads(req: Request, res: Response, next: NextFunction
         if (!validCategories.includes(req.params.category))
             return res.status(400).send("Invalid category selected.");
 
-        const threads = await Thread.find({ category: req.params.category }).sort({ createdAt: -1 }).populate("author", "username");
+        const threads = await Thread.find({ category: req.params.category }).sort({ createdAt: -1 }).populate("author", "username avatar");
         res.status(200).send(threads);
     } catch (err: any) {
         next(err);
@@ -54,11 +54,13 @@ export async function GetThread(req: Request, res: Response, next: NextFunction)
             select: "author text",
             populate: {
                 path: "author",
-                select: "username role"
+                select: "username role avatar"
             }
         });
         if (!thread)
             return res.status(404).send("Thread not found.");
+
+        await thread.updateOne({ $inc: { views: 1 } });
 
         res.status(200).send(thread);
     } catch (err: any) {

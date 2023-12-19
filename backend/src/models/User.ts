@@ -10,7 +10,8 @@ export type UserDocument = Document & {
     username: string,
     email: string,
     password: string,
-    role: UserRole
+    role: UserRole,
+    avatar: string
 };
 
 const userSchema = new Schema<UserDocument>({
@@ -32,6 +33,10 @@ const userSchema = new Schema<UserDocument>({
         type: Number,
         requried: true,
         default: UserRole.USER
+    },
+    avatar: {
+        type: String,
+        default: "/avatars/default.jpg"
     }
 }, { timestamps: true });
 

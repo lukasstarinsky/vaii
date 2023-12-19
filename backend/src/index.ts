@@ -46,6 +46,7 @@ app.use(passport.session());
 import * as Routes from "./routes";
 app.use("/api/auth", Routes.Auth);
 app.use("/api/forum", Routes.Forum);
+app.use(express.static("public"));
 
 // 404
 app.use((req, res, next) => {

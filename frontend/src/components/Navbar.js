@@ -41,7 +41,7 @@ export default function Navbar() {
           </>
         :
           <>
-          <Link to="/" className="ms-5 text-neutral-500 hover:text-white">
+          <Link to={`/user/${user.id}/profile`} className="ms-5 text-neutral-500 hover:text-white">
             <FontAwesomeIcon icon={faAddressCard} className="me-1" />
             Profile
           </Link>

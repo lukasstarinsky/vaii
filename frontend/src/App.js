@@ -7,6 +7,7 @@ import Register from "pages/Register";
 import ProtectedRoute from "components/ProtectedRoute";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ForumThreadCreate from "pages/ForumThreadCreate";
+import UserProfile from "pages/UserProfile";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/forum/thread/:id" element={<ForumThread />} />
             <Route path="/forum/category/:category" element={<ForumCategory />} />
             <Route path="/forum/category/:category/create" element={<ForumThreadCreate />} />
+            <Route path="/user/:userId/profile" element={<UserProfile />} />
           </Route>
 
           <Route path="/auth/login" element={<Login />}/>

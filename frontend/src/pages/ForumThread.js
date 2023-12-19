@@ -36,7 +36,7 @@ export default function ForumThread() {
       return;
     }
 
-    ForumService.CreatePost(thread._id, replyText, (newPost) => {
+    ForumService.CreatePost(thread._id, replyText, () => {
       navigate(0);
     }, (errors) => {
       setErrors(errors);
